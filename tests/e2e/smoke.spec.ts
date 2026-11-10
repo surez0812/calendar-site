@@ -1,0 +1,42 @@
+import { expect, test } from "@playwright/test";
+
+/** prelaunch 冒烟：双语/无 console error/无横溢/prelaunch 口径/防剧透/SEO 三件套。 */
+test("zh 首页 prelaunch 冒烟", async ({ page }) => {
+  const errors: string[] = [];
+  page.on("console", (m) => {
+    if (m.type() !== "error") return;
+    const text = m.text();
+    // 静态站预热/中断请求在测试并行时会以 ERR_ABORTED 出现，不是页面错误
+    if (/ERR_ABORTED|Failed to load resource: net::ERR_ABORTED/.test(text)) return;
+    errors.push(text);
+  });
+  const res = await page.goto("/zh/");
+  expect(res?.status()).toBe(200);
+  await expect(page.locator("h1")).toContainText("历象");
+  await expect(page.locator('[data-testid="cta-prelaunch"]')).toHaveAttribute("aria-disabled", "true");
+  await expect(page.locator('img[src*="festival"]')).toHaveCount(0); // festival* hidden 防剧透
+  await expect(page.locator('a[href*="apps.apple.com"]')).toHaveCount(0); // 无假商店链接
+  const ld = await page.locator('script[type="application/ld+json"]').textContent();
+  expect(ld).toContain("Organization");
+  expect(ld).not.toContain("SoftwareApplication");
+  const html = await page.content();
+  expect(html).toContain("support@zhaoyao.xin");
+  expect(html).not.toContain("zhaoyao.com");
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1);
+  expect(overflow).toBe(false);
+  const canonical = await page.getAttribute('link[rel="canonical"]', "href");
+  expect(canonical).toBe("https://lixiang.zhaoyao.xin/zh/");
+  expect(errors).toEqual([]);
+});
+
+test("en 首页 + 语言切换 + 法务页", async ({ page }) => {
+  await page.goto("/en/");
+  await expect(page.locator("h1")).toContainText("Lixiang Almanac");
+  const hreflang = await page.getAttribute('link[rel="alternate"][hreflang="zh-CN"]', "href");
+  expect(hreflang).toBe("https://lixiang.zhaoyao.xin/zh/");
+  await page.locator('.site-footer a[href="/en/privacy/"]').first().click();
+  await expect(page.locator(".legal-wrap > h1")).toContainText("Privacy Policy");
+  await page.goto("/en/");
+  await page.locator(".site-footer .lang-switch").first().click();
+  await expect(page).toHaveURL(/\/zh\/$/);
+});
