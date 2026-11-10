@@ -2,15 +2,21 @@ import { describe, expect, test } from "vitest";
 import { SITE } from "@/config/site";
 import { shot } from "@/lib/shots";
 
-describe("素材渲染白名单（预接线）", () => {
-  test("视觉方向待定 + 文件未交付：一律不渲染", () => {
-    expect(SITE.visualDirectionPending).toBe(true);
-    for (const k of ["phone-month", "phone-day", "phone-day-b", "phone-anniversary", "phone-settings", "ipad"]) {
-      expect(shot(k, "light"), k).toBeNull();
-      expect(shot(k, "dark"), k).toBeNull();
-    }
+describe("素材渲染（v3 D1）", () => {
+  test("白名单素材返回 1x/2x srcSet", () => {
+    expect(SITE.visualDirectionPending).toBe(false);
+    const s = shot("phone-month", "light")!;
+    expect(s.src).toBe("/mockups/phone-month-light-375.webp");
+    // 组件 key 不变，D1 文件映射：phone-day-b → phone-compass
+    expect(shot("phone-day-b", "light")!.src).toBe("/mockups/phone-compass-light-375.webp");
+    expect(s.srcSet).toContain("750w");
+    const dark = shot("phone-month", "dark")!;
+    expect(dark.src).toContain("-dark-");
+    const ipad = shot("ipad", "light")!;
+    expect(ipad.src).toBe("/mockups/ipad-light-683.webp");
+    expect(ipad.srcSet).toContain("1366w");
   });
-  test("reference/hidden 永不渲染", () => {
-    for (const k of ["web-home-1440", "festivals", "festival", "festival-locked", "duo"]) expect(shot(k, "light")).toBeNull();
+  test("hidden（节日/锁定/解锁）与 reference（1440）永不渲染", () => {
+    for (const k of ["phone-festivals", "phone-locked", "phone-unlocked", "web-home-1440", "duo"]) expect(shot(k, "light"), k).toBeNull();
   });
 });

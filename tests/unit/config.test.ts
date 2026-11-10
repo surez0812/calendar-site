@@ -11,8 +11,8 @@ describe("config 单点", () => {
     expect(SITE.siteBaseUrl).toBe("https://lixiang.zhaoyao.xin");
     expect(SITE.supportEmail).toBe("support@zhaoyao.xin");
   });
-  test("视觉方向待定（旧纸墨稿已被 Sure 否决）", () => {
-    expect(SITE.visualDirectionPending).toBe(true);
+  test("视觉方向已定（D1 奶油暖橘）→ 待定态关闭", () => {
+    expect(SITE.visualDirectionPending).toBe(false);
   });
   test("prelaunch 口径与开关", () => {
     expect(SITE.releaseState).toBe("prelaunch");
@@ -22,22 +22,21 @@ describe("config 单点", () => {
     expect(SITE.jsonLd.organization).toBe(true);
     expect(SITE.jsonLd.website).toBe(true);
   });
-  test("素材登记表已按 designer 约定预接线（值为空，type=pending）", () => {
+  test("素材登记表 = D1 白名单（手机 5 + ipad + 1440 reference + 节日 hidden）", () => {
     const keys = PUBLIC_SHOTS.map((s) => s.key);
-    for (const k of ["phone-month", "phone-day", "phone-day-b", "phone-anniversary", "phone-settings", "ipad", "web-home-1440"]) expect(keys, k).toContain(k);
-    for (const s of PUBLIC_SHOTS) {
-      if (s.type === "hidden" || s.type === "reference") continue;
-      expect(s.type, s.key).toBe("pending");
-      expect(s.src.light, s.key).toBeNull();
-      expect(s.src.dark, s.key).toBeNull();
+    const visible = PUBLIC_SHOTS.filter((s) => s.type === "design-mock").map((s) => s.key);
+    expect(visible).toEqual(["phone-month", "phone-day", "phone-day-b", "phone-anniversary", "phone-settings", "ipad"]);
+    for (const k of ["phone-festivals", "phone-locked", "phone-unlocked"]) {
+      expect(PUBLIC_SHOTS.find((s) => s.key === k)?.type, k).toBe("hidden");
+      expect(isShotRendered(k), k).toBe(false);
     }
-    // 节日页永远 hidden；Duo 不进官网（显式排除，不登记为可渲染素材）
-    for (const k of ["festivals", "festival", "festival-locked"]) expect(isShotRendered(k)).toBe(false);
+    expect(PUBLIC_SHOTS.find((s) => s.key === "web-home-1440")?.type).toBe("reference");
+    for (const k of visible) expect(PUBLIC_SHOTS.find((s) => s.key === k)?.available.light, k).toBe(true);
+    // Duo 不登记（A13 前不进官网）
     expect(keys.some((k) => /duo/i.test(k))).toBe(false);
     expect(EXCLUDED_ASSETS.duo).toMatch(/A13/);
   });
   test("禁止 .com 邮箱出现在源码/页面渲染结果", () => {
-    // 注意：法务源 Markdown 的「构建说明」里记录了 .com 不可达的证据（不渲染）；这里只扫源码与最终渲染正文。
     const roots = ["src"].map((d) => path.join(process.cwd(), d));
     const walk = (dir: string): string[] =>
       fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
@@ -49,11 +48,9 @@ describe("config 单点", () => {
     for (const f of files) expect(fs.readFileSync(f, "utf8"), f).not.toContain("zhaoyao.com");
     for (const kind of ["privacy", "support"] as const) for (const l of ["zh", "en"] as const) expect(legalHtml(kind, l)).not.toContain("zhaoyao.com");
   });
-
-  test("CSS 只用中性占位色（旧方向纸墨/朱砂不得回流）", () => {
+  test("CSS 使用 D1 token（旧方向色值不得回流）", () => {
     const css = fs.readFileSync(path.join(process.cwd(), "src/app/globals.css"), "utf8");
-    for (const banned of ["#F4F0E6", "#B8321F", "#FBF8F0", "#1B1915", "#14120F", "Songti SC"]) {
-      expect(css, banned).not.toContain(banned);
-    }
+    for (const banned of ["#F4F0E6", "#B8321F", "#FBF8F0", "#1B1915", "#14120F"]) expect(css, banned).not.toContain(banned);
+    for (const d1 of ["#FBF5EC", "#DE9B78", "#241C16", "#E8A886"]) expect(css, d1).toContain(d1);
   });
 });

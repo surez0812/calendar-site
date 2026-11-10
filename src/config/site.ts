@@ -18,16 +18,13 @@ export const SITE = {
   /** App 未上架：prelaunch（无 App Store/TestFlight 链接、无假 badge、QR 不放链接） */
   releaseState: "prelaunch" as ReleaseState,
   appStoreAppId: null as string | null,
-  /**
-   * 视觉方向待定（Sure 2026-11-11 否决「原纸墨稿」；A 天象星历 / B 节气色谱 / C 器物木刻 三选一未定）。
-   * true 时页面顶部渲染「临时占位」提示条；designer 交付 tokens-web-v1.css + 签字 mockup 后改 false。
-   */
-  visualDirectionPending: true,
+  /** 视觉方向已定（D1 奶油暖橘，Sure 2026-11-11）→ false；保留开关供回滚/未来改版 */
+  visualDirectionPending: false,
   /** Duo 段：目标支持但 v1 不宣称 → A13 通过 + PM 开开关后才 true（D13） */
   showDuo: false,
   /** 结构化数据：prelaunch 只发 Organization + WebSite；live 后才加 SoftwareApplication（D11） */
   jsonLd: { organization: true, website: true, softwareApplication: false },
-  legalVersion: { privacy: "prelaunch-0.1", support: "prelaunch-0.1" },
+  legalVersion: { privacy: "prelaunch-0.1", support: "prelaunch-0.3" }, // 与 legal/support 源（v0.3）一致；privacy 未变仍 0.1
 } as const;
 
 export const isLive = (): boolean => SITE.releaseState === "live" && !!SITE.appStoreAppId;
@@ -38,45 +35,51 @@ export function titleFor(l: Locale, suffix?: string): string {
 }
 
 /**
- * 素材登记表（**预接线**：key 已按 designer `design/directions/README.md` 命名约定固定；值先全 null）。
- * 方向选定后：只补文件 + 改 `type`（design-mock → real），结构/渲染代码不变；**Duo 不进官网**（A13 前不露出）。
- * 命名约定（designer 2026-11-11）：
- *   phone-{month,day,day-b,anniversary,settings}{,-dark}.png（375×812 @2x）→ /mockups/{key}-{theme}-{375,750}.webp
- *   ipad{,-dark}.png（1366×1024）      → /mockups/ipad-{theme}-{683,1366}.webp
- *   web-home-1440{,-dark}.png（1440 宽整页）→ 设计参考位（reference，不上公开页）
- *   og-{zh,en}.png / brand/lixiang-mark-{light,dark}.svg → 见 ASSET_NOTES
- *   festival* 永远 hidden（防剧透，与视觉方向无关）
+ * 素材登记表（v3：D1「奶油暖橘」已定稿，Sure 2026-11-11）。
+ * 唯一参照：handover/calendar-20261111/design/final/D1-apricot/（README + spec/tokens-web-v1.css）。
+ * 上站白名单以 PM 口径为准：`phone-festivals` / `phone-locked` / `phone-unlocked` 属节日内容 → hidden（防剧透）。
+ * Duo 素材 D1 已交付但 **A13 前不进官网**（EXCLUDED_ASSETS.duo）。
  */
 export type ShotKind = "phone" | "ipad" | "desktop";
-export type ShotType = "pending" | "design-mock" | "real" | "hidden" | "reference";
+export type ShotType = "design-mock" | "real" | "hidden" | "reference";
 export type ShotAsset = {
   key: string;
+  /** D1 源文件名（默认 = key；`phone-day-b` 用 D1 的 phone-compass 画面，保持组件映射零改动） */
+  file: string;
   kind: ShotKind;
   type: ShotType;
-  /** 两主题文件是否已交付；null = 未交付（预接线状态） */
-  src: { light: string | null; dark: string | null };
+  available: { light: boolean; dark: boolean };
   widths: readonly number[];
   w: number;
   h: number;
   note?: string;
 };
 
+/**
+ * 素材登记表（v3：D1「奶油暖橘」定稿，Sure 2026-11-11）。
+ * 唯一参照：handover/calendar-20261111/design/final/D1-apricot/。
+ * 组件对 key 的映射保持 v2.1 不变（month/day/day-b/anniversary/settings），只换底层 D1 文件 → 组件 diff=0。
+ * 节日内容（festivals/locked/unlocked）hidden 防剧透；Duo 素材 A13 前不进官网。
+ */
 export const PUBLIC_SHOTS: readonly ShotAsset[] = [
-  { key: "phone-month", kind: "phone", type: "pending", src: { light: null, dark: null }, widths: [375, 750], w: 375, h: 812, note: "月历主屏" },
-  { key: "phone-day", kind: "phone", type: "pending", src: { light: null, dark: null }, widths: [375, 750], w: 375, h: 812, note: "日详情" },
-  { key: "phone-day-b", kind: "phone", type: "pending", src: { light: null, dark: null }, widths: [375, 750], w: 375, h: 812, note: "日详情第 2 屏" },
-  { key: "phone-anniversary", kind: "phone", type: "pending", src: { light: null, dark: null }, widths: [375, 750], w: 375, h: 812, note: "纪念日" },
-  { key: "phone-settings", kind: "phone", type: "pending", src: { light: null, dark: null }, widths: [375, 750], w: 375, h: 812, note: "设置" },
-  { key: "ipad", kind: "ipad", type: "pending", src: { light: null, dark: null }, widths: [683, 1366], w: 683, h: 512, note: "iPad 1366×1024" },
-  { key: "web-home-1440", kind: "desktop", type: "reference", src: { light: null, dark: null }, widths: [1440], w: 1440, h: 4950, note: "官网 1440 设计参考（不上公开页）" },
-  // 节日内容页：涉及未解锁内容（剧透）→ 永远 hidden；只允许锁定态且需 PM 单独批准（D8/R17）
-  { key: "festivals", kind: "phone", type: "hidden", src: { light: null, dark: null }, widths: [], w: 375, h: 812 },
-  { key: "festival", kind: "phone", type: "hidden", src: { light: null, dark: null }, widths: [], w: 375, h: 812 },
-  { key: "festival-locked", kind: "phone", type: "hidden", src: { light: null, dark: null }, widths: [], w: 375, h: 812, note: "仅 PM 批准后可改为 design-mock（锁定态）" },
+  { key: "phone-month", file: "phone-month", kind: "phone", type: "design-mock", available: { light: true, dark: true }, widths: [375, 750], w: 375, h: 812, note: "月历主屏（D1）" },
+  { key: "phone-day", file: "phone-day", kind: "phone", type: "design-mock", available: { light: true, dark: true }, widths: [375, 750], w: 375, h: 812, note: "日详情（D1）" },
+  { key: "phone-day-b", file: "phone-compass", kind: "phone", type: "design-mock", available: { light: true, dark: true }, widths: [375, 750], w: 375, h: 812, note: "日详情第 2 屏 → D1 吉神罗盘" },
+  { key: "phone-anniversary", file: "phone-anniversary", kind: "phone", type: "design-mock", available: { light: true, dark: true }, widths: [375, 750], w: 375, h: 812, note: "纪念日（D1）" },
+  { key: "phone-settings", file: "phone-settings", kind: "phone", type: "design-mock", available: { light: true, dark: true }, widths: [375, 750], w: 375, h: 812, note: "设置（D1）" },
+  { key: "ipad", file: "ipad", kind: "ipad", type: "design-mock", available: { light: true, dark: true }, widths: [683, 1366], w: 683, h: 512, note: "iPad 双栏（D1；本轮不接线，保留）" },
+  { key: "web-home-1440", file: "web-home-1440", kind: "desktop", type: "reference", available: { light: true, dark: true }, widths: [1440], w: 1440, h: 4950, note: "官网 1440 设计参考（不上公开页）" },
+  { key: "phone-festivals", file: "phone-festivals", kind: "phone", type: "hidden", available: { light: true, dark: true }, widths: [], w: 375, h: 812 },
+  { key: "phone-locked", file: "phone-locked", kind: "phone", type: "hidden", available: { light: true, dark: true }, widths: [], w: 375, h: 812 },
+  { key: "phone-unlocked", file: "phone-unlocked", kind: "phone", type: "hidden", available: { light: true, dark: true }, widths: [], w: 375, h: 812 },
 ] as const;
 
-/** 站点不接的素材（显式登记，避免误加）：Duo A13 前不露出；OG/品牌 mark 走 public/ 静态文件而非截图管线。 */
-export const EXCLUDED_ASSETS = { duo: "A13 前不进官网", og: "public/og/og-{zh,en}.png", brand: "public/brand/lixiang-mark-{light,dark}.svg" } as const;
+/** 站点不接的素材：Duo A13 前不露出；OG/品牌 mark 待 Sure 批 mark。 */
+export const EXCLUDED_ASSETS = {
+  duo: "A13 前不进官网（D1 已交付 duo-* 素材但站点不渲染）",
+  og: "public/og/og-{zh,en}.png（待 mark 批后出）",
+  brand: "public/brand/lixiang-mark-{light,dark}.svg（待 mark 批后出）",
+} as const;
 
 export const shotOf = (key: string): ShotAsset | undefined => PUBLIC_SHOTS.find((s) => s.key === key);
 /** 是否可上公开页：hidden/reference/pending 都不可；具体文件是否已交付由 lib/shots.ts 判断。 */

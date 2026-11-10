@@ -14,10 +14,12 @@ const OG = path.join(ROOT, "public", "og");
 const BUILD_MOCKUPS = process.env.BUILD_MOCKUPS === "1";
 if (!BUILD_MOCKUPS) console.log("skip mockups: visual direction pending (set BUILD_MOCKUPS=1 only after designer signs the new direction)");
 // key = designer 命名约定（见 src/config/site.ts）；file 名去掉 phone- 前缀
-const DEFAULT_KEYS = ["phone-month", "phone-day", "phone-day-b", "phone-anniversary", "phone-settings", "ipad"];
+const DEFAULT_KEYS = ["phone-month", "phone-day", "phone-day-b", "phone-anniversary", "phone-settings", "ipad"]; // D1 白名单（节日/锁定/解锁 = hidden，不生成）
+/** key → D1 源文件基名（保持组件映射不变） */
+const FILE_OF = { "phone-day-b": "phone-compass" };
 const IDS = process.env.MOCKUP_IDS ? process.env.MOCKUP_IDS.split(",") : DEFAULT_KEYS;
 const designFile = (key, theme) => {
-  const base = key.startsWith("phone-") ? `phone-${key.slice("phone-".length)}` : key;
+  const base = FILE_OF[key] ?? key;
   return theme === "light" ? `${base}.png` : `${base}-dark.png`;
 };
 const widthsFor = (key) => (key === "ipad" ? [683, 1366] : [375, 750]);
@@ -33,7 +35,8 @@ for (const id of BUILD_MOCKUPS ? IDS : []) {
     const src = path.join(SRC, file);
     if (!fs.existsSync(src)) { console.warn(`WARN missing ${src}`); continue; }
     for (const w of widthsFor(id)) {
-      const out = path.join(OUT, `${id}-${theme}-${w}.webp`);
+      const outName = FILE_OF[id] ?? id;
+      const out = path.join(OUT, `${outName}-${theme}-${w}.webp`);
       await sharp(src).resize({ width: w }).webp({ quality: 82 }).toFile(out);
       n++;
     }
@@ -43,11 +46,11 @@ if (BUILD_MOCKUPS) console.log(`mockups: ${n} webp written`);
 
 // ---- OG 占位（1200×630，designer 定稿后替换）----
 const ogSvg = (title, sub) => `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
-  <rect width="1200" height="630" fill="#FFFFFF"/>
+  <rect width="1200" height="630" fill="#FBF5EC"/>
   <rect x="56" y="56" width="1088" height="518" fill="none" stroke="#DCD2C0" stroke-width="2"/>
-  <text x="600" y="300" text-anchor="middle" font-family="-apple-system, PingFang SC, sans-serif" font-size="92" font-weight="700" fill="#1D1D1F">${title}</text>
-  <text x="600" y="378" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="34" fill="#6E6E73">${sub}</text>
-  <text x="600" y="520" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="22" letter-spacing="6" fill="#8E8E93">LIXIANG ALMANAC</text>
+  <text x="600" y="300" text-anchor="middle" font-family="-apple-system, PingFang SC, sans-serif" font-size="92" font-weight="700" fill="#3A3028">${title}</text>
+  <text x="600" y="378" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="34" fill="#7A6A5C">${sub}</text>
+  <text x="600" y="520" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="22" letter-spacing="6" fill="#C97B5A">LIXIANG ALMANAC</text>
 </svg>`;
 const OGS = [
   { file: "og-zh.png", svg: ogSvg("历象", "一本干净的中国万年历") },

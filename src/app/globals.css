@@ -1,35 +1,44 @@
-/* 历象官网 · **中性占位视觉**（Sure 2026-11-11 否决旧「纸墨 + 朱砂」方向；A/B/C 三方向未定）。
-   本文件只提供结构与中性灰/白占位，不是正式视觉；正式 token 待 designer 交付 tokens-web-v1.css 后整体替换。
-   禁止在本文件继续扩展装饰性视觉（旧方向的色值/字体/封面 art 均不得回流）。 */
+/* 历象官网 · **D1「奶油暖橘」视觉（Sure 2026-11-11 定稿）**。
+   token 来源：handover/calendar-20261111/design/final/D1-apricot/spec/tokens-web-v1.css（唯一参照）。
+   只在本块维护颜色/字体/圆角等 token；布局结构不动。旧方向与中性占位色值不得回流。 */
 
 :root {
-  --bg: #FFFFFF;
-  --surface: #F7F7F8;
-  --surface2: #EFEFF1;
-  --ink: #1D1D1F;
-  --ink2: #6E6E73;
-  --ink3: #8E8E93;
-  --line: #E5E5EA;
-  --accent: #3A3A3C;          /* 中性强调（非品牌色；待正式 token 替换） */
+  /* D1 Light（奶油暖橘） */
+  --bg: #FBF5EC;
+  --surface: #FFFDF9;
+  --surface2: #F6E7D6;
+  --ink: #3A3028;
+  --ink2: #7A6A5C;
+  --ink3: #8A7462;
+  --line: #EDDFCD;
+  --accent: #DE9B78;          /* 暖橘：色块/点/主按钮 */
+  --accent-strong: #C97B5A;   /* 陶土：忌/警示/强调 */
+  --jade: #93A98E;            /* 柔绿：吉/节气 */
   --on-accent: #FFFFFF;
-  --sans: -apple-system, "SF Pro Text", "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  --glow: rgba(222, 155, 120, .18);
+  --serif: "Songti SC", "STSong", "Noto Serif SC", serif;
+  --sans: -apple-system, "SF Pro Text", "PingFang SC", "Helvetica Neue", sans-serif;
   --latin: "Manrope", system-ui, -apple-system, sans-serif;
   --content: 1180px;
-  --radius-card: 18px;
+  --radius-card: 22px;
   --motion: 160ms ease-out;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #111112;
-    --surface: #1C1C1E;
-    --surface2: #242426;
-    --ink: #F5F5F7;
-    --ink2: #A1A1A6;
-    --ink3: #8E8E93;
-    --line: #2C2C2E;
-    --accent: #D1D1D6;
-    --on-accent: #111112;
+    /* D1 Dark · 暖夜深棕（非纯黑/非反色） */
+    --bg: #241C16;
+    --surface: #2E241C;
+    --surface2: #3A2E24;
+    --ink: #F3E8DA;
+    --ink2: #C7B5A2;
+    --ink3: #9A8774;
+    --line: #43352A;
+    --accent: #E8A886;
+    --accent-strong: #D98E6C;
+    --jade: #A9BCA3;
+    --on-accent: #241C16;
+    --glow: rgba(232, 168, 134, .16);
   }
 }
 
@@ -53,7 +62,7 @@ body {
 }
 a { color: inherit; }
 img { max-width: 100%; }
-h1, h2, h3 { font-family: var(--sans); font-weight: 600; color: var(--ink); margin: 0; letter-spacing: -.01em; }
+h1, h2, h3 { font-family: var(--serif); font-weight: 600; color: var(--ink); margin: 0; letter-spacing: .01em; }
 :is(a, button, [tabindex]):focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 
 .skip-link {
@@ -65,7 +74,7 @@ h1, h2, h3 { font-family: var(--sans); font-weight: 600; color: var(--ink); marg
 
 .wrap { max-width: var(--content); margin: 0 auto; padding: 0 24px; }
 
-/* 视觉方向未定提示条（config.visualDirectionPending） */
+/* 视觉方向未定提示条（仅 visualDirectionPending=true 时渲染；D1 已定稿默认不渲染，保留供回滚） */
 .preview-banner {
   display: flex; align-items: center; justify-content: center; gap: 8px;
   padding: 7px 16px; font-size: 12px; letter-spacing: .02em;
@@ -85,7 +94,7 @@ h1, h2, h3 { font-family: var(--sans); font-weight: 600; color: var(--ink); marg
 }
 .brand-copy { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; }
 .brand-row { display: flex; align-items: baseline; gap: 8px; }
-.brand-main { font-size: 22px; font-weight: 700; line-height: 1.1; letter-spacing: .01em; }
+.brand-main { font-family: var(--serif); font-size: 22px; font-weight: 700; line-height: 1.1; letter-spacing: .02em; }
 .brand-latin { font-family: var(--latin); font-size: 8.5px; font-weight: 600; letter-spacing: .14em; color: var(--ink2); }
 .brand-parent { font-size: 10px; letter-spacing: .06em; color: var(--ink2); }
 .nav { display: flex; align-items: center; gap: 34px; margin-left: auto; }
@@ -140,6 +149,8 @@ h1, h2, h3 { font-family: var(--sans); font-weight: 600; color: var(--ink); marg
 }
 .device-frame img { display: block; width: 100%; height: auto; border-radius: 36px; }
 .device--hero .device-frame { width: 330px; }
+.device--pad .device-frame { width: 520px; aspect-ratio: 1366 / 1024; border-radius: 28px; padding: 8px; }
+.device--pad .device-frame img { border-radius: 20px; }
 .device-placeholder {
   width: 300px; max-width: 100%; aspect-ratio: 375 / 812; border-radius: 44px;
   border: 1px dashed var(--line); background: var(--surface);
@@ -221,6 +232,7 @@ h1, h2, h3 { font-family: var(--sans); font-weight: 600; color: var(--ink); marg
 @media (max-width: 420px) {
   .brand-main { font-size: 16px; }
   .device-frame, .device--hero .device-frame, .device-placeholder, .device--hero .device-placeholder { width: 250px; }
+  .device--pad .device-frame { width: 100%; }
 }
 
 /* ---------- legal ---------- */

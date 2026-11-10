@@ -23,28 +23,22 @@ Next.js **静态导出**营销站（无 DB / 无服务端 / 无 pm2），中文 
 
 `content/legal/{privacy,support}.md` 由 `pnpm legal` 从 `handover/calendar-20261111/legal/*-prelaunch.md` vendor 而来，源 SHA 记在 `content/legal/LEGAL_SOURCE.sha256`；**站点与 App 内 WebView 共用同一份正文**，源变更需重新 vendor 并提交。
 
-## 视觉状态：**方向待定（中性占位）**
+## 视觉状态：**D1「奶油暖橘」已定稿（v3）**
 
-Sure 2026-11-11 **否决**了旧「纸墨 + 朱砂」方向（太素、与琴调太像），新方向 A 天象星历 / B 节气色谱 / C 器物木刻 未定。因此：
+Sure 2026-11-11 定稿 **D1「奶油暖橘」**；站点已接入 D1 素材与 token（唯一参照 `handover/calendar-20261111/design/final/D1-apricot/spec/tokens-web-v1.css` + `WEB-HANDOFF.md`）：
 
-- 站点视觉 = **中性灰/白占位**（`src/app/globals.css`），顶部提示条「视觉方向待定 · 临时占位」（`SITE.visualDirectionPending=true`）；**旧方向色值/字体/封面 art 不得回流**（有单测守卫）。
-- 旧方向 mockup 已从仓库移除（`public/mockups/` 不再存在）；`lib/shots.ts` 在待定期间对所有 design-mock 返回 `null`，页面渲染**中性设备占位框**。素材管线脚本默认跳过（只有 `BUILD_MOCKUPS=1` 才生成）；新方向签字后：接 `tokens-web-v1.css` + 新素材 → `visualDirectionPending=false` → 重建 tar/SHA。
-- `festival*` 永远 `hidden`（防剧透），与视觉方向无关。
-- 部署**暂缓**：建议等 Sure 选定方向 + 批 mockup 后一次性上线（部署窗口由 Lead/ops 定）。
-
-## 素材命名约定（预接线，designer `design/directions/README.md`）
-
-`src/config/site.ts` 的 `PUBLIC_SHOTS` 已按固定 key 预接线，值为空（`type:"pending"` → 页面渲染中性占位）：
-
-| key | designer 源文件 | 站内输出 | 说明 |
-|---|---|---|---|
-| `phone-month` / `phone-day` / `phone-day-b` / `phone-anniversary` / `phone-settings` | `phone-{...}{,-dark}.png`（375×812 @2x） | `/mockups/{key}-{theme}-{375,750}.webp` | 手机设计示意 |
-| `ipad` | `ipad{,-dark}.png`（1366×1024） | `/mockups/ipad-{theme}-{683,1366}.webp` | iPad 设计示意 |
-| `web-home-1440` | `web-home-1440{,-dark}.png` | —（`reference`，仅设计参考，不上公开页） | 1440 整页稿 |
-| `festivals` / `festival` / `festival-locked` | — | —（`hidden`，永不渲染） | 防剧透 |
-| —（不登记） | Duo | — | **A13 前不进官网**（`EXCLUDED_ASSETS.duo`） |
-
-方向选定后：补 PNG 到 `handover/.../design/mockups/` → `BUILD_MOCKUPS=1 pnpm assets` → 把对应 key 的 `type` 改 `"design-mock"`/`"real"` 并填 `src` → `visualDirectionPending=false` → 重建 tar/SHA。**不改渲染代码/结构**。
+- token：`src/app/globals.css` 顶部 token 段（light/dark，`prefers-color-scheme`）；结构/字号/间距不变。旧方向（纸墨+朱砂）与中性占位色值不得回流（单测守卫）。
+- 素材白名单（`PUBLIC_SHOTS`，组件 key 不变 → 组件 diff 最小）：
+  | key | D1 文件 | 站内 |
+  |---|---|---|
+  | `phone-month` / `phone-day` / `phone-anniversary` / `phone-settings` | 同名 D1 PNG | `/mockups/{file}-{theme}-{375,750}.webp` |
+  | `phone-day-b` | **D1 `phone-compass`**（D1 无独立第 2 屏；用吉神罗盘画面，避免与 F1 重复） | `/mockups/phone-compass-...` |
+  | `ipad` | `ipad{,-dark}.png` | `/mockups/ipad-{theme}-{683,1366}.webp`（设备段已接线） |
+  | `phone-festivals` / `phone-locked` / `phone-unlocked` | D1 有文件但 **hidden**（防剧透） | 不生成、不上站 |
+  | `web-home-1440` | D1 1440 终稿 | `reference`（不上公开页） |
+  | Duo | D1 有文件但 **A13 前不进官网** | `EXCLUDED_ASSETS.duo` |
+- 素材管线：`MOCKUP_SRC="$PWD/../handover/calendar-20261111/design/final/D1-apricot" BUILD_MOCKUPS=1 pnpm assets`（PNG 不进仓，只提交 WebP）。
+- OG/品牌 mark：仍为占位（待 Sure 批 mark）；商店截图（`design/.../store/`）**不得用于站点**（ASC 上传须真机实拍）。
 
 ## 本地开发/检查
 
