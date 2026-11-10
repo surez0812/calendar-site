@@ -149,6 +149,8 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 600; color: var(--ink); mar
 }
 .device-frame img { display: block; width: 100%; height: auto; border-radius: 36px; }
 .device--hero .device-frame { width: 330px; }
+.device--pad .device-frame { width: 520px; aspect-ratio: 1366 / 1024; border-radius: 28px; padding: 8px; }
+.device--pad .device-frame img { border-radius: 20px; }
 .device-placeholder {
   width: 300px; max-width: 100%; aspect-ratio: 375 / 812; border-radius: 44px;
   border: 1px dashed var(--line); background: var(--surface);
@@ -230,6 +232,7 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 600; color: var(--ink); mar
 @media (max-width: 420px) {
   .brand-main { font-size: 16px; }
   .device-frame, .device--hero .device-frame, .device-placeholder, .device--hero .device-placeholder { width: 250px; }
+  .device--pad .device-frame { width: 100%; }
 }
 
 /* ---------- legal ---------- */

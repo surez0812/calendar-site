@@ -17,8 +17,7 @@ test("zh 首页 prelaunch 冒烟", async ({ page }) => {
   await expect(page.locator('[data-testid="visual-pending"]')).toHaveCount(0); // D1 已定：待定提示条移除
   await expect(page.locator('[data-testid="device-placeholder"]')).toHaveCount(0); // 已有 D1 素材，不再占位
   await expect(page.locator('img[src*="/mockups/phone-month"]')).toHaveCount(1); // D1 hero 素材
-  // iPad 素材接线待 Lead 批白名单 → 设备段仍为明确占位（非假图）
-  await expect(page.getByText(/iPad 布局示意待补|iPad layout mock/).first()).toBeVisible();
+  await expect(page.locator('img[src*="/mockups/ipad"]')).toHaveCount(1); // D1 iPad 双栏素材（Lead 已批接线例外）
   await expect(page.locator('img[src*="phone-festival"], img[src*="phone-locked"], img[src*="phone-unlocked"]')).toHaveCount(0); // 节日/锁定/解锁 hidden
   await expect(page.locator('img[src*="festival"]')).toHaveCount(0); // festival* hidden 防剧透
   await expect(page.locator('a[href*="apps.apple.com"]')).toHaveCount(0); // 无假商店链接
