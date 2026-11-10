@@ -90,16 +90,10 @@ export function AppHome({ l }: { l: Locale }) {
                 <DevicePlaceholder l={l} label={c.devices.iphoneCaption} />
               )}
             </div>
-            <div className="devices-card">
-              {pair("ipad") ? (
-                <Device shots={pair("ipad")!} alt={`${c.hero.title} iPad ${c.hero.chipDesignMock}`} className="device--pad" chip={c.hero.chipDesignMock} />
-              ) : (
-                <div className="devices-card devices-card--placeholder" role="group" aria-label={c.devices.ipadPending}>
-                  <span className="placeholder-mark" aria-hidden="true" />
-                  <span className="placeholder-title">{c.devices.ipadPending}</span>
-                  <span className="placeholder-note">{c.hero.chipDesignMock}</span>
-                </div>
-              )}
+            <div className="devices-card devices-card--placeholder" role="group" aria-label={c.devices.ipadPending}>
+              <span className="placeholder-mark" aria-hidden="true" />
+              <span className="placeholder-title">{c.devices.ipadPending}</span>
+              <span className="placeholder-note">{c.hero.chipDesignMock}</span>
             </div>
           </div>
           <p className="devices-note">{c.devices.placeholderNote}</p>

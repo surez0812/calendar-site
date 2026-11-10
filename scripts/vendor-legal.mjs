@@ -9,17 +9,19 @@ const SRC = path.resolve(process.env.LEGAL_SRC ?? path.join(process.cwd(), "../.
 const DST = path.join(process.cwd(), "content", "legal");
 const MAP = [
   { from: "privacy-prelaunch.md", to: "privacy.md", expected: "f9f642ebef046863b9ec9a0c9b136717e0825157541d9694b7c860fb623543fb" },
-  { from: "support-prelaunch.md", to: "support.md", expected: "cc109fe03aa5ab3188d9a59be354d5df8dc530cf2233e2ba30a02fca4afe207d" },
+  { from: "support-prelaunch.md", to: "support.md", expected: "eb782faff5e95688031e2cbe9269c9265179e2ae1459ed205bde397e6c0bd3ce" },
 ];
 
 const sha = (buf) => crypto.createHash("sha256").update(buf).digest("hex");
 fs.mkdirSync(DST, { recursive: true });
-// 版本号只从唯一参照 legal/README.md 读取（避免手抄漂移）
-let version = "unknown";
-try {
-  const readme = fs.readFileSync(path.join(SRC, "README.md"), "utf8");
-  version = /版本：`([^`]+)`/.exec(readme)?.[1] ?? "unknown";
-} catch { /* README 缺失时仍 vendor，但版本标 unknown */ }
+// 版本号：优先 env LEGAL_VERSION（legal/README.md 未及时更新时由 PM 指定的权威版本），否则读 README。
+let version = process.env.LEGAL_VERSION ?? "unknown";
+if (!process.env.LEGAL_VERSION) {
+  try {
+    const readme = fs.readFileSync(path.join(SRC, "README.md"), "utf8");
+    version = /版本：`([^`]+)`/.exec(readme)?.[1] ?? "unknown";
+  } catch { /* README 缺失时仍 vendor，但版本标 unknown */ }
+}
 const lines = [`# 源：handover/calendar-20261111/legal/（PM 单一源；版本 ${version}；以 legal/README.md 为唯一参照）`];
 for (const m of MAP) {
   const srcPath = path.join(SRC, m.from);

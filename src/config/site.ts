@@ -24,7 +24,7 @@ export const SITE = {
   showDuo: false,
   /** 结构化数据：prelaunch 只发 Organization + WebSite；live 后才加 SoftwareApplication（D11） */
   jsonLd: { organization: true, website: true, softwareApplication: false },
-  legalVersion: { privacy: "prelaunch-0.1", support: "prelaunch-0.3" }, // 与 legal/support 源（v0.3）一致；privacy 未变仍 0.1
+  legalVersion: { privacy: "prelaunch-0.1", support: "prelaunch-0.4" }, // 与 legal/support 源（v0.4）一致；privacy 未变仍 0.1
 } as const;
 
 export const isLive = (): boolean => SITE.releaseState === "live" && !!SITE.appStoreAppId;
