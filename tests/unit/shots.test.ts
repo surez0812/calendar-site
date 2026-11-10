@@ -2,15 +2,15 @@ import { describe, expect, test } from "vitest";
 import { SITE } from "@/config/site";
 import { shot } from "@/lib/shots";
 
-describe("publicShots 渲染白名单", () => {
-  test("视觉方向待定：旧方向 design-mock 一律不渲染（Sure 2026-11-11 否决旧纸墨稿）", () => {
+describe("素材渲染白名单（预接线）", () => {
+  test("视觉方向待定 + 文件未交付：一律不渲染", () => {
     expect(SITE.visualDirectionPending).toBe(true);
-    for (const id of ["month", "day", "day-b", "anniversary", "settings"]) {
-      expect(shot(id, "light"), id).toBeNull();
-      expect(shot(id, "dark"), id).toBeNull();
+    for (const k of ["phone-month", "phone-day", "phone-day-b", "phone-anniversary", "phone-settings", "ipad"]) {
+      expect(shot(k, "light"), k).toBeNull();
+      expect(shot(k, "dark"), k).toBeNull();
     }
   });
-  test("festival* 永不渲染（防剧透）", () => {
-    for (const id of ["festivals", "festival", "festival-locked"]) expect(shot(id, "light")).toBeNull();
+  test("reference/hidden 永不渲染", () => {
+    for (const k of ["web-home-1440", "festivals", "festival", "festival-locked", "duo"]) expect(shot(k, "light")).toBeNull();
   });
 });

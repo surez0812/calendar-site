@@ -1,24 +1,23 @@
-/** 设计示意素材（PLAN §8.2 白名单）。源：designer 375@2x PNG → scripts/build-web-assets.mjs 生成 WebP。 */
-import { SITE, isShotPublic } from "@/config/site";
+/** 设计示意/真机素材（PLAN §8.2）。**预接线**：key 固定，文件未交付时返回 null → 页面渲染中性占位。 */
+import { SITE, shotOf } from "@/config/site";
 
 export type ShotTheme = "light" | "dark";
 export type Shot = { src: string; srcSet: string; w: number; h: number };
 
-const W1 = 375;
-/** designer 未出暗色变体的素材：暗色下沿用浅色示意（图注仍为「设计示意」）。 */
-const NO_DARK = new Set(["day-b"]);
-const W2 = 750;
-const H = 812; // 375×812 视口
-
-export function shot(id: string, theme: ShotTheme): Shot | null {
-  if (!isShotPublic(id)) return null; // hidden 素材永不渲染（festival* 防剧透）
+export function shot(key: string, theme: ShotTheme): Shot | null {
+  const asset = shotOf(key);
+  if (!asset) return null;
+  // 只渲染登记为 design-mock / real 的素材；hidden（节日防剧透）、reference（1440 设计参考）、pending（未交付）一律 null
+  if (asset.type !== "design-mock" && asset.type !== "real") return null;
   // 视觉方向待定：旧方向 mockup 一律不上页（Sure 2026-11-11 否决旧纸墨稿）
   if (SITE.visualDirectionPending) return null;
-  const t = theme === "dark" && NO_DARK.has(id) ? "light" : theme;
+  const file = asset.src[theme];
+  if (!file) return null; // 预接线：文件未交付
+  const [w1, w2] = asset.widths.length >= 2 ? asset.widths : [asset.w, asset.w * 2];
   return {
-    src: `/mockups/${id}-${t}-${W1}.webp`,
-    srcSet: `/mockups/${id}-${t}-${W1}.webp ${W1}w, /mockups/${id}-${t}-${W2}.webp ${W2}w`,
-    w: W1,
-    h: H,
+    src: `/mockups/${key}-${theme}-${w1}.webp`,
+    srcSet: `/mockups/${key}-${theme}-${w1}.webp ${w1}w, /mockups/${key}-${theme}-${w2}.webp ${w2}w`,
+    w: w1,
+    h: asset.h,
   };
 }

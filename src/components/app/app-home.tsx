@@ -37,7 +37,7 @@ function Feature({ l, n, shots }: { l: Locale; n: 0 | 1 | 2; shots: { light: Sho
 
 export function AppHome({ l }: { l: Locale }) {
   const c = copy(l);
-  const hero = pair("month");
+  const hero = pair("phone-month");
   return (
     <div className="app-home">
       <PreviewBanner l={l} />
@@ -63,9 +63,9 @@ export function AppHome({ l }: { l: Locale }) {
 
         <section id="features" className="features" aria-labelledby="features-title">
           <h2 id="features-title" className="section-title">{c.features.title}</h2>
-          <Feature l={l} n={0} shots={pair("day")} />
-          <Feature l={l} n={1} shots={pair("day-b")} />
-          <Feature l={l} n={2} shots={pair("anniversary")} />
+          <Feature l={l} n={0} shots={pair("phone-day")} />
+          <Feature l={l} n={1} shots={pair("phone-day-b")} />
+          <Feature l={l} n={2} shots={pair("phone-anniversary")} />
         </section>
 
         <section id="unlock" className="unlock" aria-labelledby="unlock-title">
@@ -84,8 +84,8 @@ export function AppHome({ l }: { l: Locale }) {
           <p className="devices-body">{c.devices.body}</p>
           <div className="devices-grid">
             <div className="devices-card">
-              {pair("settings") ? (
-                <Device shots={pair("settings")!} alt={`${c.hero.title} iPhone ${c.hero.chipDesignMock}`} chip={c.devices.iphoneCaption} />
+              {pair("phone-settings") ? (
+                <Device shots={pair("phone-settings")!} alt={`${c.hero.title} iPhone ${c.hero.chipDesignMock}`} chip={c.devices.iphoneCaption} />
               ) : (
                 <DevicePlaceholder l={l} label={c.devices.iphoneCaption} />
               )}

@@ -32,6 +32,20 @@ Sure 2026-11-11 **否决**了旧「纸墨 + 朱砂」方向（太素、与琴调
 - `festival*` 永远 `hidden`（防剧透），与视觉方向无关。
 - 部署**暂缓**：建议等 Sure 选定方向 + 批 mockup 后一次性上线（部署窗口由 Lead/ops 定）。
 
+## 素材命名约定（预接线，designer `design/directions/README.md`）
+
+`src/config/site.ts` 的 `PUBLIC_SHOTS` 已按固定 key 预接线，值为空（`type:"pending"` → 页面渲染中性占位）：
+
+| key | designer 源文件 | 站内输出 | 说明 |
+|---|---|---|---|
+| `phone-month` / `phone-day` / `phone-day-b` / `phone-anniversary` / `phone-settings` | `phone-{...}{,-dark}.png`（375×812 @2x） | `/mockups/{key}-{theme}-{375,750}.webp` | 手机设计示意 |
+| `ipad` | `ipad{,-dark}.png`（1366×1024） | `/mockups/ipad-{theme}-{683,1366}.webp` | iPad 设计示意 |
+| `web-home-1440` | `web-home-1440{,-dark}.png` | —（`reference`，仅设计参考，不上公开页） | 1440 整页稿 |
+| `festivals` / `festival` / `festival-locked` | — | —（`hidden`，永不渲染） | 防剧透 |
+| —（不登记） | Duo | — | **A13 前不进官网**（`EXCLUDED_ASSETS.duo`） |
+
+方向选定后：补 PNG 到 `handover/.../design/mockups/` → `BUILD_MOCKUPS=1 pnpm assets` → 把对应 key 的 `type` 改 `"design-mock"`/`"real"` 并填 `src` → `visualDirectionPending=false` → 重建 tar/SHA。**不改渲染代码/结构**。
+
 ## 本地开发/检查
 
 ```bash

@@ -13,9 +13,15 @@ const OG = path.join(ROOT, "public", "og");
 // 拿到 designer 签字版新素材后：BUILD_MOCKUPS=1 pnpm assets，并把对应 shot 的 type 改 real/design-mock。
 const BUILD_MOCKUPS = process.env.BUILD_MOCKUPS === "1";
 if (!BUILD_MOCKUPS) console.log("skip mockups: visual direction pending (set BUILD_MOCKUPS=1 only after designer signs the new direction)");
-const IDS = process.env.MOCKUP_IDS ? process.env.MOCKUP_IDS.split(",") : ["month", "day", "day-b", "anniversary", "settings"];
+// key = designer 命名约定（见 src/config/site.ts）；file 名去掉 phone- 前缀
+const DEFAULT_KEYS = ["phone-month", "phone-day", "phone-day-b", "phone-anniversary", "phone-settings", "ipad"];
+const IDS = process.env.MOCKUP_IDS ? process.env.MOCKUP_IDS.split(",") : DEFAULT_KEYS;
+const designFile = (key, theme) => {
+  const base = key.startsWith("phone-") ? `phone-${key.slice("phone-".length)}` : key;
+  return theme === "light" ? `${base}.png` : `${base}-dark.png`;
+};
+const widthsFor = (key) => (key === "ipad" ? [683, 1366] : [375, 750]);
 const THEMES = ["light", "dark"];
-const WIDTHS = [375, 750];
 
 if (BUILD_MOCKUPS) fs.mkdirSync(OUT, { recursive: true });
 fs.mkdirSync(OG, { recursive: true });
@@ -23,10 +29,10 @@ fs.mkdirSync(OG, { recursive: true });
 let n = 0;
 for (const id of BUILD_MOCKUPS ? IDS : []) {
   for (const theme of THEMES) {
-    const file = theme === "light" ? `phone-${id}.png` : `phone-${id}-dark.png`;
+    const file = designFile(id, theme);
     const src = path.join(SRC, file);
     if (!fs.existsSync(src)) { console.warn(`WARN missing ${src}`); continue; }
-    for (const w of WIDTHS) {
+    for (const w of widthsFor(id)) {
       const out = path.join(OUT, `${id}-${theme}-${w}.webp`);
       await sharp(src).resize({ width: w }).webp({ quality: 82 }).toFile(out);
       n++;

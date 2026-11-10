@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 import fs from "node:fs";
 import path from "node:path";
-import { SITE, PUBLIC_SHOTS, isShotPublic } from "@/config/site";
+import { SITE, PUBLIC_SHOTS, EXCLUDED_ASSETS, isShotRendered } from "@/config/site";
 import { legalHtml } from "@/lib/legal";
 
 describe("config 单点", () => {
@@ -22,9 +22,19 @@ describe("config 单点", () => {
     expect(SITE.jsonLd.organization).toBe(true);
     expect(SITE.jsonLd.website).toBe(true);
   });
-  test("publicShots：白名单 4 页 + festival* hidden", () => {
-    expect(PUBLIC_SHOTS.filter((s) => s.type === "design-mock").map((s) => s.id)).toEqual(["month", "day", "day-b", "anniversary", "settings"]);
-    for (const id of ["festivals", "festival", "festival-locked"]) expect(isShotPublic(id)).toBe(false);
+  test("素材登记表已按 designer 约定预接线（值为空，type=pending）", () => {
+    const keys = PUBLIC_SHOTS.map((s) => s.key);
+    for (const k of ["phone-month", "phone-day", "phone-day-b", "phone-anniversary", "phone-settings", "ipad", "web-home-1440"]) expect(keys, k).toContain(k);
+    for (const s of PUBLIC_SHOTS) {
+      if (s.type === "hidden" || s.type === "reference") continue;
+      expect(s.type, s.key).toBe("pending");
+      expect(s.src.light, s.key).toBeNull();
+      expect(s.src.dark, s.key).toBeNull();
+    }
+    // 节日页永远 hidden；Duo 不进官网（显式排除，不登记为可渲染素材）
+    for (const k of ["festivals", "festival", "festival-locked"]) expect(isShotRendered(k)).toBe(false);
+    expect(keys.some((k) => /duo/i.test(k))).toBe(false);
+    expect(EXCLUDED_ASSETS.duo).toMatch(/A13/);
   });
   test("禁止 .com 邮箱出现在源码/页面渲染结果", () => {
     // 注意：法务源 Markdown 的「构建说明」里记录了 .com 不可达的证据（不渲染）；这里只扫源码与最终渲染正文。

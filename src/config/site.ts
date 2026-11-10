@@ -37,24 +37,50 @@ export function titleFor(l: Locale, suffix?: string): string {
   return suffix ? `${suffix} - ${SITE.productName[l]}` : `${SITE.productName[l]} - ${SITE.tagline[l]}`;
 }
 
-/** 可公开素材白名单（PM 2026-11-11）。type: design-mock（标「设计示意」）/ real（真机图）/ hidden（不上站） */
-export type ShotType = "design-mock" | "real" | "hidden";
-export type PublicShot = { id: string; type: ShotType; note?: string };
+/**
+ * 素材登记表（**预接线**：key 已按 designer `design/directions/README.md` 命名约定固定；值先全 null）。
+ * 方向选定后：只补文件 + 改 `type`（design-mock → real），结构/渲染代码不变；**Duo 不进官网**（A13 前不露出）。
+ * 命名约定（designer 2026-11-11）：
+ *   phone-{month,day,day-b,anniversary,settings}{,-dark}.png（375×812 @2x）→ /mockups/{key}-{theme}-{375,750}.webp
+ *   ipad{,-dark}.png（1366×1024）      → /mockups/ipad-{theme}-{683,1366}.webp
+ *   web-home-1440{,-dark}.png（1440 宽整页）→ 设计参考位（reference，不上公开页）
+ *   og-{zh,en}.png / brand/lixiang-mark-{light,dark}.svg → 见 ASSET_NOTES
+ *   festival* 永远 hidden（防剧透，与视觉方向无关）
+ */
+export type ShotKind = "phone" | "ipad" | "desktop";
+export type ShotType = "pending" | "design-mock" | "real" | "hidden" | "reference";
+export type ShotAsset = {
+  key: string;
+  kind: ShotKind;
+  type: ShotType;
+  /** 两主题文件是否已交付；null = 未交付（预接线状态） */
+  src: { light: string | null; dark: string | null };
+  widths: readonly number[];
+  w: number;
+  h: number;
+  note?: string;
+};
 
-export const PUBLIC_SHOTS: readonly PublicShot[] = [
-  { id: "month", type: "design-mock", note: "月历主屏" },
-  { id: "day", type: "design-mock", note: "日详情（宜忌/冲煞）" },
-  { id: "day-b", type: "design-mock", note: "日详情第 2 屏" },
-  { id: "anniversary", type: "design-mock", note: "纪念日" },
-  { id: "settings", type: "design-mock", note: "设置" },
-  // 节日内容页：涉及未解锁内容（剧透）→ 默认 hidden；只允许锁定态且需 PM 单独批准（D8/R17）
-  { id: "festivals", type: "hidden" },
-  { id: "festival", type: "hidden" },
-  { id: "festival-locked", type: "hidden", note: "仅 PM 批准后可改为 design-mock（锁定态）" },
+export const PUBLIC_SHOTS: readonly ShotAsset[] = [
+  { key: "phone-month", kind: "phone", type: "pending", src: { light: null, dark: null }, widths: [375, 750], w: 375, h: 812, note: "月历主屏" },
+  { key: "phone-day", kind: "phone", type: "pending", src: { light: null, dark: null }, widths: [375, 750], w: 375, h: 812, note: "日详情" },
+  { key: "phone-day-b", kind: "phone", type: "pending", src: { light: null, dark: null }, widths: [375, 750], w: 375, h: 812, note: "日详情第 2 屏" },
+  { key: "phone-anniversary", kind: "phone", type: "pending", src: { light: null, dark: null }, widths: [375, 750], w: 375, h: 812, note: "纪念日" },
+  { key: "phone-settings", kind: "phone", type: "pending", src: { light: null, dark: null }, widths: [375, 750], w: 375, h: 812, note: "设置" },
+  { key: "ipad", kind: "ipad", type: "pending", src: { light: null, dark: null }, widths: [683, 1366], w: 683, h: 512, note: "iPad 1366×1024" },
+  { key: "web-home-1440", kind: "desktop", type: "reference", src: { light: null, dark: null }, widths: [1440], w: 1440, h: 4950, note: "官网 1440 设计参考（不上公开页）" },
+  // 节日内容页：涉及未解锁内容（剧透）→ 永远 hidden；只允许锁定态且需 PM 单独批准（D8/R17）
+  { key: "festivals", kind: "phone", type: "hidden", src: { light: null, dark: null }, widths: [], w: 375, h: 812 },
+  { key: "festival", kind: "phone", type: "hidden", src: { light: null, dark: null }, widths: [], w: 375, h: 812 },
+  { key: "festival-locked", kind: "phone", type: "hidden", src: { light: null, dark: null }, widths: [], w: 375, h: 812, note: "仅 PM 批准后可改为 design-mock（锁定态）" },
 ] as const;
 
-export const shotOf = (id: string): PublicShot | undefined => PUBLIC_SHOTS.find((s) => s.id === id);
-export const isShotPublic = (id: string): boolean => {
-  const s = shotOf(id);
-  return !!s && s.type !== "hidden";
+/** 站点不接的素材（显式登记，避免误加）：Duo A13 前不露出；OG/品牌 mark 走 public/ 静态文件而非截图管线。 */
+export const EXCLUDED_ASSETS = { duo: "A13 前不进官网", og: "public/og/og-{zh,en}.png", brand: "public/brand/lixiang-mark-{light,dark}.svg" } as const;
+
+export const shotOf = (key: string): ShotAsset | undefined => PUBLIC_SHOTS.find((s) => s.key === key);
+/** 是否可上公开页：hidden/reference/pending 都不可；具体文件是否已交付由 lib/shots.ts 判断。 */
+export const isShotRendered = (key: string): boolean => {
+  const s = shotOf(key);
+  return !!s && (s.type === "design-mock" || s.type === "real");
 };
