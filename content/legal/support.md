@@ -34,7 +34,7 @@ A：不需要。农历、节气、黄历与纪念日提醒均在本机计算与�
 A：节俗内容按日期解锁——未到那一天，只会显示节日名称与日期，不展示具体流程。到当日自动解锁，之后可随时回看。
 
 **Q：黄历的宜忌和别的 App 不一样？**
-A：传统黄历的宜忌并没有唯一标准，不同通书与流派结果可能不同。本应用采用开源历法库 6tail/lunar-swift（MIT）的数据口径，并在「关于」页注明来源。农历日期、节气时刻与法定节假日等可核对项，我们会以权威公布数据为准。
+A：传统黄历的宜忌并没有唯一标准，不同通书与流派结果可能不同。本应用采用开源历法库 6tail/lunar-swift（MIT）的数据口径，并在「关于」页注明来源。农历日期、节气时刻等可核对项，我们会以权威公布数据为准。
 
 **Q：支持哪些设备？**
 A：计划支持 iPhone 与 iPad（iOS 17 及以上）。**具体支持范围以 App Store 上架页面为准**。
@@ -75,7 +75,7 @@ No. Lunar dates, solar terms, the almanac and reminders are computed on device. 
 Custom content unlocks by date. Before the day, only the festival name and date are shown; the detailed procedure unlocks on the day and can be reviewed afterwards.
 
 **Why does the almanac differ from another app?**
-Traditional almanac "suitable/avoid" entries have no single authority; different almanacs and schools may differ. This app uses the data of the open-source `6tail/lunar-swift` library (MIT) and states its source in the About screen. Verifiable items — lunar dates, solar-term times and public holidays — follow authoritative published data.
+Traditional almanac "suitable/avoid" entries have no single authority; different almanacs and schools may differ. This app uses the data of the open-source `6tail/lunar-swift` library (MIT) and states its source in the About screen. Verifiable items — lunar dates and solar-term times — follow authoritative published data.
 
 **Which devices are supported?**
 iPhone and iPad (iOS 17 or later) are planned. **Check the App Store listing for the final supported range.**
@@ -98,3 +98,8 @@ No. They remain on your device.
    - [ ] FAQ 里「免费/无广告/无内购」必须与上架版本一致，否则删改
    - [x] **支持邮箱地址已定稿（2026-11-11 Lead 裁定）**：最终 **`support@zhaoyao.xin`**。依据：`zhaoyao.xin` 有 MX（mx1/mx2/mx3.qiye.aliyun.com）且全站在用；`zhaoyao.com` 为第三方 2004 年注册、无 A/MX（非我们域名）。Sure 确认 `.com` 系笔误；**发布门已解除**，无需再核。
 - [ ] 是否放 TestFlight/邮件订阅入口：**待 Sure 定**，未定不放
+
+## 版本记录
+
+- `prelaunch-0.2`（2026-11-11）：按 Sure 范围收缩（不做「休班/调休」与「工具入口」）→ FAQ 删除「法定节假日」表述；**站点需重新 vendor 并更新 `LEGAL_SOURCE.sha256`**。
+- `prelaunch-0.3`（2026-11-11）：**英文 FAQ 同步删除 “public holidays”**（中英一致：「Verifiable items — lunar dates and solar-term times」）；内容不变、无需重审。**站点 vendor / `LEGAL_SOURCE.sha256` 以 prelaunch-0.3 SHA 为准**。
