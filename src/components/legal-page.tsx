@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PreviewBanner } from "@/components/preview-banner";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { SITE, type Locale } from "@/config/site";
@@ -12,6 +13,7 @@ export function LegalPage({ l, kind }: { l: Locale; kind: LegalKind }) {
   const version = kind === "privacy" ? SITE.legalVersion.privacy : SITE.legalVersion.support;
   return (
     <div className="app-home">
+      <PreviewBanner l={l} />
       <SiteHeader l={l} />
       <main id="main" className="legal-wrap">
         <p className="legal-kicker">{c.legal.version} {version}</p>

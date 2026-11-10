@@ -11,6 +11,9 @@ describe("config 单点", () => {
     expect(SITE.siteBaseUrl).toBe("https://lixiang.zhaoyao.xin");
     expect(SITE.supportEmail).toBe("support@zhaoyao.xin");
   });
+  test("视觉方向待定（旧纸墨稿已被 Sure 否决）", () => {
+    expect(SITE.visualDirectionPending).toBe(true);
+  });
   test("prelaunch 口径与开关", () => {
     expect(SITE.releaseState).toBe("prelaunch");
     expect(SITE.appStoreAppId).toBeNull();
@@ -35,5 +38,12 @@ describe("config 单点", () => {
     expect(files.length).toBeGreaterThan(0);
     for (const f of files) expect(fs.readFileSync(f, "utf8"), f).not.toContain("zhaoyao.com");
     for (const kind of ["privacy", "support"] as const) for (const l of ["zh", "en"] as const) expect(legalHtml(kind, l)).not.toContain("zhaoyao.com");
+  });
+
+  test("CSS 只用中性占位色（旧方向纸墨/朱砂不得回流）", () => {
+    const css = fs.readFileSync(path.join(process.cwd(), "src/app/globals.css"), "utf8");
+    for (const banned of ["#F4F0E6", "#B8321F", "#FBF8F0", "#1B1915", "#14120F", "Songti SC"]) {
+      expect(css, banned).not.toContain(banned);
+    }
   });
 });

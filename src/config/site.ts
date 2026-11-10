@@ -18,6 +18,11 @@ export const SITE = {
   /** App 未上架：prelaunch（无 App Store/TestFlight 链接、无假 badge、QR 不放链接） */
   releaseState: "prelaunch" as ReleaseState,
   appStoreAppId: null as string | null,
+  /**
+   * 视觉方向待定（Sure 2026-11-11 否决「原纸墨稿」；A 天象星历 / B 节气色谱 / C 器物木刻 三选一未定）。
+   * true 时页面顶部渲染「临时占位」提示条；designer 交付 tokens-web-v1.css + 签字 mockup 后改 false。
+   */
+  visualDirectionPending: true,
   /** Duo 段：目标支持但 v1 不宣称 → A13 通过 + PM 开开关后才 true（D13） */
   showDuo: false,
   /** 结构化数据：prelaunch 只发 Organization + WebSite；live 后才加 SoftwareApplication（D11） */

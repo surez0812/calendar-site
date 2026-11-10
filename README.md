@@ -23,11 +23,14 @@ Next.js **静态导出**营销站（无 DB / 无服务端 / 无 pm2），中文 
 
 `content/legal/{privacy,support}.md` 由 `pnpm legal` 从 `handover/calendar-20261111/legal/*-prelaunch.md` vendor 而来，源 SHA 记在 `content/legal/LEGAL_SOURCE.sha256`；**站点与 App 内 WebView 共用同一份正文**，源变更需重新 vendor 并提交。
 
-## 可公开素材白名单（防剧透）
+## 视觉状态：**方向待定（中性占位）**
 
-`PUBLIC_SHOTS`：`month` / `day` / `day-b` / `anniversary` / `settings` = `design-mock`（图注「设计示意」）；`festival*` = `hidden`，**永不渲染**（节日内容未解锁，只允许锁定态且需 PM 单独批准）。真机截图到位后只把 `type` 改 `"real"`，不改渲染代码。
+Sure 2026-11-11 **否决**了旧「纸墨 + 朱砂」方向（太素、与琴调太像），新方向 A 天象星历 / B 节气色谱 / C 器物木刻 未定。因此：
 
-素材管线：designer `handover/calendar-20261111/design/mockups/phone-*.png`（375@2x）→ `pnpm assets` → `public/mockups/*-{375,750}.webp`；PNG 原图不进仓库。
+- 站点视觉 = **中性灰/白占位**（`src/app/globals.css`），顶部提示条「视觉方向待定 · 临时占位」（`SITE.visualDirectionPending=true`）；**旧方向色值/字体/封面 art 不得回流**（有单测守卫）。
+- 旧方向 mockup 已从仓库移除（`public/mockups/` 不再存在）；`lib/shots.ts` 在待定期间对所有 design-mock 返回 `null`，页面渲染**中性设备占位框**。素材管线脚本默认跳过（只有 `BUILD_MOCKUPS=1` 才生成）；新方向签字后：接 `tokens-web-v1.css` + 新素材 → `visualDirectionPending=false` → 重建 tar/SHA。
+- `festival*` 永远 `hidden`（防剧透），与视觉方向无关。
+- 部署**暂缓**：建议等 Sure 选定方向 + 批 mockup 后一次性上线（部署窗口由 Lead/ops 定）。
 
 ## 本地开发/检查
 
@@ -52,9 +55,11 @@ npx pnpm@10.34.6 shots          # 375/1440 × zh/en × light/dark 截图 → han
 4. 回滚：`ln -sfn <PREV> current`（秒级）；配置回滚用 vhost 备份 + `nginx -t` + reload（单独授权）
 5. **不部署直到 Sure/ops 窗口确认**；同机有主站/古琴/ghostmaps，窗口需跨组通告
 
-## 已知占位（待设计/PM 交付，不阻塞骨架）
+## 已知占位（待视觉方向 + designer，不阻塞结构）
 
-- 品牌印：`src/components/brand-glyph.tsx` 为 CSS 占位「历」，待 designer 定 mark 后换 SVG
-- OG 图：`public/og/og-{zh,en}.png` 为中性占位（纸底 + 字），待 designer 定稿 1200×630
-- 显示字体：暂用系统衬线（Songti SC/Noto Serif SC）；如需「历象」专用子集，按 guqin `build-noto-subset` 流程另出
-- iPad 设备段：设计示意待补（明确占位，不伪造）
+- 全部视觉：中性占位（见上）；正式 token 待 `tokens-web-v1.css`
+- 品牌印：`BrandGlyph` 为 CSS 占位「历」字（非正式资产），待 mark 方向批后换 SVG
+- OG：`public/og/og-{zh,en}.png` 中性占位（白底 + 字），待 designer 定稿
+- 显示字体：系统字体；正式字体随 token 确定
+- 设备素材：中性占位框；新方向 mockup / 真机截图到位后替换
+- `/ceremony/<slug>` 静态正文目录：未来 cron 发布，**不在本站 tar 内**，nginx 预留见 `OPS-REQUEST.md` §3.1

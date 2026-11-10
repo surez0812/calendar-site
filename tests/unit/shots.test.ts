@@ -1,17 +1,16 @@
 import { describe, expect, test } from "vitest";
+import { SITE } from "@/config/site";
 import { shot } from "@/lib/shots";
 
 describe("publicShots 渲染白名单", () => {
-  test("白名单素材返回 1x/2x srcSet", () => {
-    const s = shot("month", "light")!;
-    expect(s.src).toBe("/mockups/month-light-375.webp");
-    expect(s.srcSet).toContain("750w");
-    expect(s.w).toBe(375);
+  test("视觉方向待定：旧方向 design-mock 一律不渲染（Sure 2026-11-11 否决旧纸墨稿）", () => {
+    expect(SITE.visualDirectionPending).toBe(true);
+    for (const id of ["month", "day", "day-b", "anniversary", "settings"]) {
+      expect(shot(id, "light"), id).toBeNull();
+      expect(shot(id, "dark"), id).toBeNull();
+    }
   });
   test("festival* 永不渲染（防剧透）", () => {
     for (const id of ["festivals", "festival", "festival-locked"]) expect(shot(id, "light")).toBeNull();
-  });
-  test("无暗色变体的素材暗色回退浅色", () => {
-    expect(shot("day-b", "dark")!.src).toBe("/mockups/day-b-light-375.webp");
   });
 });

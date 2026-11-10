@@ -1,4 +1,6 @@
 import { Device } from "@/components/app/device";
+import { DevicePlaceholder } from "@/components/app/device-placeholder";
+import { PreviewBanner } from "@/components/preview-banner";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { SITE, type Locale } from "@/config/site";
@@ -22,7 +24,11 @@ function Feature({ l, n, shots }: { l: Locale; n: 0 | 1 | 2; shots: { light: Sho
           <p>{item.body}</p>
         </div>
         <div className="feature-media">
-          {shots ? <Device shots={shots} alt={`${item.title}（${c.hero.chipDesignMock}）`} chip={c.hero.chipDesignMock} /> : null}
+          {shots ? (
+            <Device shots={shots} alt={`${item.title}（${c.hero.chipDesignMock}）`} chip={c.hero.chipDesignMock} />
+          ) : (
+            <DevicePlaceholder l={l} label={item.title} />
+          )}
         </div>
       </div>
     </section>
@@ -34,6 +40,7 @@ export function AppHome({ l }: { l: Locale }) {
   const hero = pair("month");
   return (
     <div className="app-home">
+      <PreviewBanner l={l} />
       <SiteHeader l={l} />
       <main id="main">
         <section className="hero" aria-labelledby="hero-title">
@@ -45,11 +52,13 @@ export function AppHome({ l }: { l: Locale }) {
             <a className="text-link" href="#features">{c.hero.ctaSecondary}</a>
           </div>
           <p className="fine">{c.hero.fine}</p>
-          {hero ? (
-            <div className="hero-device">
+          <div className="hero-device">
+            {hero ? (
               <Device shots={hero} alt={`${c.hero.title} ${c.hero.chipDesignMock}`} className="device--hero" chip={c.hero.chipDesignMock} eager />
-            </div>
-          ) : null}
+            ) : (
+              <DevicePlaceholder l={l} label={c.preview.devicePlaceholder} hero />
+            )}
+          </div>
         </section>
 
         <section id="features" className="features" aria-labelledby="features-title">
@@ -74,11 +83,13 @@ export function AppHome({ l }: { l: Locale }) {
           <h2 id="devices-title" className="section-title">{c.devices.title}</h2>
           <p className="devices-body">{c.devices.body}</p>
           <div className="devices-grid">
-            {pair("settings") ? (
-              <div className="devices-card">
+            <div className="devices-card">
+              {pair("settings") ? (
                 <Device shots={pair("settings")!} alt={`${c.hero.title} iPhone ${c.hero.chipDesignMock}`} chip={c.devices.iphoneCaption} />
-              </div>
-            ) : null}
+              ) : (
+                <DevicePlaceholder l={l} label={c.devices.iphoneCaption} />
+              )}
+            </div>
             <div className="devices-card devices-card--placeholder" role="group" aria-label={c.devices.ipadPending}>
               <span className="placeholder-mark" aria-hidden="true" />
               <span className="placeholder-title">{c.devices.ipadPending}</span>

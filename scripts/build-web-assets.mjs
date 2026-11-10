@@ -9,15 +9,19 @@ const ROOT = process.cwd();
 const SRC = path.resolve(process.env.MOCKUP_SRC ?? path.join(ROOT, "../../handover/calendar-20261111/design/mockups"));
 const OUT = path.join(ROOT, "public", "mockups");
 const OG = path.join(ROOT, "public", "og");
-const IDS = ["month", "day", "day-b", "anniversary", "settings"]; // = publicShots 中非 hidden 项
+// 视觉方向待定（Sure 2026-11-11 否决旧纸墨稿）：默认不生成旧方向 mockup。
+// 拿到 designer 签字版新素材后：BUILD_MOCKUPS=1 pnpm assets，并把对应 shot 的 type 改 real/design-mock。
+const BUILD_MOCKUPS = process.env.BUILD_MOCKUPS === "1";
+if (!BUILD_MOCKUPS) console.log("skip mockups: visual direction pending (set BUILD_MOCKUPS=1 only after designer signs the new direction)");
+const IDS = process.env.MOCKUP_IDS ? process.env.MOCKUP_IDS.split(",") : ["month", "day", "day-b", "anniversary", "settings"];
 const THEMES = ["light", "dark"];
 const WIDTHS = [375, 750];
 
-fs.mkdirSync(OUT, { recursive: true });
+if (BUILD_MOCKUPS) fs.mkdirSync(OUT, { recursive: true });
 fs.mkdirSync(OG, { recursive: true });
 
 let n = 0;
-for (const id of IDS) {
+for (const id of BUILD_MOCKUPS ? IDS : []) {
   for (const theme of THEMES) {
     const file = theme === "light" ? `phone-${id}.png` : `phone-${id}-dark.png`;
     const src = path.join(SRC, file);
@@ -29,15 +33,15 @@ for (const id of IDS) {
     }
   }
 }
-console.log(`mockups: ${n} webp written`);
+if (BUILD_MOCKUPS) console.log(`mockups: ${n} webp written`);
 
 // ---- OG 占位（1200×630，designer 定稿后替换）----
 const ogSvg = (title, sub) => `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
-  <rect width="1200" height="630" fill="#F4F0E6"/>
+  <rect width="1200" height="630" fill="#FFFFFF"/>
   <rect x="56" y="56" width="1088" height="518" fill="none" stroke="#DCD2C0" stroke-width="2"/>
-  <text x="600" y="300" text-anchor="middle" font-family="Songti SC, Noto Serif SC, serif" font-size="96" font-weight="700" fill="#1B1915">${title}</text>
-  <text x="600" y="378" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="34" fill="#5C574C">${sub}</text>
-  <text x="600" y="520" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="24" letter-spacing="6" fill="#B8321F">LIXIANG ALMANAC</text>
+  <text x="600" y="300" text-anchor="middle" font-family="-apple-system, PingFang SC, sans-serif" font-size="92" font-weight="700" fill="#1D1D1F">${title}</text>
+  <text x="600" y="378" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="34" fill="#6E6E73">${sub}</text>
+  <text x="600" y="520" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="22" letter-spacing="6" fill="#8E8E93">LIXIANG ALMANAC</text>
 </svg>`;
 const OGS = [
   { file: "og-zh.png", svg: ogSvg("历象", "一本干净的中国万年历") },
@@ -48,5 +52,7 @@ for (const o of OGS) {
   console.log(`og: ${o.file}`);
 }
 
-const total = fs.readdirSync(OUT).reduce((sum, f) => sum + fs.statSync(path.join(OUT, f)).size, 0);
-console.log(`public/mockups size: ${(total / 1024 / 1024).toFixed(2)} MiB`);
+if (BUILD_MOCKUPS) {
+  const total = fs.readdirSync(OUT).reduce((sum, f) => sum + fs.statSync(path.join(OUT, f)).size, 0);
+  console.log(`public/mockups size: ${(total / 1024 / 1024).toFixed(2)} MiB`);
+}

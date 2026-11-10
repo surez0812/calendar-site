@@ -14,6 +14,9 @@ test("zh 首页 prelaunch 冒烟", async ({ page }) => {
   expect(res?.status()).toBe(200);
   await expect(page.locator("h1")).toContainText("历象");
   await expect(page.locator('[data-testid="cta-prelaunch"]')).toHaveAttribute("aria-disabled", "true");
+  await expect(page.locator('[data-testid="visual-pending"]')).toBeVisible(); // 视觉方向待定提示条
+  await expect(page.locator('[data-testid="device-placeholder"]').first()).toBeVisible(); // 中性设备占位
+  await expect(page.locator('img[src*="/mockups/"]')).toHaveCount(0); // 旧方向 mockup 不进页面
   await expect(page.locator('img[src*="festival"]')).toHaveCount(0); // festival* hidden 防剧透
   await expect(page.locator('a[href*="apps.apple.com"]')).toHaveCount(0); // 无假商店链接
   const ld = await page.locator('script[type="application/ld+json"]').textContent();

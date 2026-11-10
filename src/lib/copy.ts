@@ -90,5 +90,11 @@ export function copy(l: Locale) {
       operator: zh ? "昭杳（个人开发者）" : "ZhaoYao (independent developer)",
     },
     legal: { back: zh ? "返回首页" : "Back to home", version: zh ? "版本" : "Version" },
+    preview: {
+      visualPending: zh
+        ? "视觉方向待定 · 当前页面为临时占位（非正式视觉）"
+        : "Visual direction pending — this page is a temporary placeholder (no final visual yet)",
+      devicePlaceholder: zh ? "设备示意 · 待定" : "Device preview · pending",
+    },
   };
 }
