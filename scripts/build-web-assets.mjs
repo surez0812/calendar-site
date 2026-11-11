@@ -14,7 +14,7 @@ const OG = path.join(ROOT, "public", "og");
 const BUILD_MOCKUPS = process.env.BUILD_MOCKUPS === "1";
 if (!BUILD_MOCKUPS) console.log("skip mockups: visual direction pending (set BUILD_MOCKUPS=1 only after designer signs the new direction)");
 // key = designer 命名约定（见 src/config/site.ts）；file 名去掉 phone- 前缀
-const DEFAULT_KEYS = ["phone-month", "phone-day", "phone-day-b", "phone-anniversary", "phone-settings", "ipad"]; // D1 白名单（节日/锁定/解锁 = hidden，不生成）
+const DEFAULT_KEYS = ["phone-month", "phone-day", "phone-day-b", "phone-anniversary", "phone-settings", "ipad", "duo-outer", "duo-open", "duo-tabletop", "duo-tent"]; // D1 白名单 + Duo 四姿态（节日/锁定/解锁 = hidden，不生成）
 /** key → D1 源文件基名（保持组件映射不变） */
 const FILE_OF = { "phone-day-b": "phone-compass" };
 const IDS = process.env.MOCKUP_IDS ? process.env.MOCKUP_IDS.split(",") : DEFAULT_KEYS;
@@ -22,7 +22,7 @@ const designFile = (key, theme) => {
   const base = FILE_OF[key] ?? key;
   return theme === "light" ? `${base}.png` : `${base}-dark.png`;
 };
-const widthsFor = (key) => (key === "ipad" ? [683, 1366] : [375, 750]);
+const widthsFor = (key) => (key === "ipad" ? [683, 1366] : key === "duo-outer" ? [466, 932] : key === "duo-tabletop" ? [669, 1338] : key.startsWith("duo-") ? [951, 1902] : [375, 750]);
 const THEMES = ["light", "dark"];
 
 if (BUILD_MOCKUPS) fs.mkdirSync(OUT, { recursive: true });

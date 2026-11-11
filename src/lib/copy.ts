@@ -63,6 +63,26 @@ export function copy(l: Locale) {
       ipadPending: zh ? "iPad 布局示意待补" : "iPad layout mock pending",
       placeholderNote: zh ? "本段为设计示意，不是 App 实拍。" : "This section is a design mock, not a real app screenshot.",
     },
+    duo: {
+      title: zh ? "iPhone Duo 介绍与兼容说明" : "iPhone Duo overview and compatibility",
+      body: zh
+        ? "历象为 iPhone Duo 的四种姿态做了布局设计：合上外屏快速看今天，展开内屏用双栏看月历与日详情，桌面与帐篷姿态把控件留在手边。"
+        : "Lixiang Almanac lays out across all four iPhone Duo poses: glance at today on the outer display, unfold for a two-column calendar and day view, and keep controls within reach in tabletop and tent.",
+      poses: zh
+        ? [
+            { label: "外屏", caption: "合上 · 快速看今天" },
+            { label: "展开", caption: "双栏月历 + 日详情" },
+            { label: "桌面", caption: "上内容 · 下控件" },
+            { label: "帐篷", caption: "观看模式 · 免手持" },
+          ]
+        : [
+            { label: "Outer display", caption: "Closed · today at a glance" },
+            { label: "Unfolded", caption: "Two-column calendar + day view" },
+            { label: "Tabletop", caption: "Content up, controls down" },
+            { label: "Tent", caption: "Hands-free viewing" },
+          ],
+      note: zh ? "以上为设计示意；iPhone Duo 的兼容与支持范围以 App Store 上架页面为准（A13 后公布）。" : "Design mock only; iPhone Duo compatibility and support will be stated on the App Store listing (after A13).",
+    },
     download: {
       title: zh ? "即将上架" : "Coming soon",
       body: zh

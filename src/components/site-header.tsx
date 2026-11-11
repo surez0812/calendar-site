@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { BrandGlyph } from "@/components/brand-glyph";
 import { ChromeMenu, LangSwitch } from "@/components/site-header-client";
-import type { Locale } from "@/config/site";
+import { SITE, type Locale } from "@/config/site";
 import { copy } from "@/lib/copy";
 import { hreflang, otherLocale } from "@/lib/i18n";
 
@@ -17,16 +17,16 @@ export function SiteHeader({ l }: { l: Locale }) {
   return (
     <header className="site-header">
       <div className="wrap">
-        <Link className="brand" href={`/${l}/`} prefetch={false} aria-label={`${c.brand.name}，${c.brand.parent}`}>
-          <BrandGlyph size={24} />
-          <span className="brand-copy">
+        <div className="brand">
+          <Link className="brand-home" href={`/${l}/`} prefetch={false} aria-label={`${c.brand.name}，${c.brand.parent}`}>
+            <BrandGlyph size={24} />
             <span className="brand-row">
               <span className="brand-main">{c.brand.name}</span>
               <span className="brand-latin">{c.brand.latin}</span>
             </span>
-            <span className="brand-parent">{c.brand.parent}</span>
-          </span>
-        </Link>
+          </Link>
+          <a className="brand-parent" href={SITE.mainSiteUrl} target="_blank" rel="noopener noreferrer">{c.brand.parent}</a>
+        </div>
         <nav className="nav" aria-label={c.nav.mainNav}>
           {links.map((it) => (
             <Link key={it.href} href={it.href} prefetch={false} data-testid={it.testid}>

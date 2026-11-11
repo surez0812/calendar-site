@@ -7,6 +7,7 @@ import { chromium } from "@playwright/test";
 
 const ROOT = process.cwd();
 const OUTDIR = path.resolve(process.env.SHOT_OUT ?? path.join(ROOT, "../../handover/calendar-20261111/web/shots/v3-d1"));
+const DPR = Number(process.env.SHOT_DPR ?? 2); // 超长页面（>16384px）用 SHOT_DPR=1 避免 Chrome 截图纹理上限
 const PORT = Number(process.env.SHOT_PORT ?? 43127);
 const BASE = `http://127.0.0.1:${PORT}`;
 fs.mkdirSync(OUTDIR, { recursive: true });
@@ -21,7 +22,7 @@ try {
   for (const locale of ["zh", "en"]) {
     for (const width of [375, 1440]) {
       for (const scheme of ["light", "dark"]) {
-        const ctx = await browser.newContext({ viewport: { width, height: width === 375 ? 812 : 900 }, colorScheme: scheme, deviceScaleFactor: 2 });
+        const ctx = await browser.newContext({ viewport: { width, height: width === 375 ? 812 : 900 }, colorScheme: scheme, deviceScaleFactor: DPR });
         const page = await ctx.newPage();
         const errors = [];
         page.on("console", (m) => {

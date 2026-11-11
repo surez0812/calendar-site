@@ -16,6 +16,12 @@ describe("素材渲染（v3 D1）", () => {
     expect(ipad.src).toBe("/mockups/ipad-light-683.webp");
     expect(ipad.srcSet).toContain("1366w");
   });
+  test("Duo 四姿态渲染（showDuo=true）", () => {
+    for (const k of ["duo-outer", "duo-open", "duo-tabletop", "duo-tent"]) {
+      expect(shot(k, "light")?.src, k).toContain(`/mockups/${k}-light-`);
+      expect(shot(k, "dark")?.src, k).toContain("-dark-");
+    }
+  });
   test("hidden（节日/锁定/解锁）与 reference（1440）永不渲染", () => {
     for (const k of ["phone-festivals", "phone-locked", "phone-unlocked", "web-home-1440", "duo"]) expect(shot(k, "light"), k).toBeNull();
   });

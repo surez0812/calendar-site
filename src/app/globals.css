@@ -86,7 +86,8 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 600; color: var(--ink); mar
 /* ---------- header ---------- */
 .site-header { background: var(--bg); border-bottom: 1px solid var(--line); }
 .site-header .wrap { height: 80px; display: flex; align-items: center; gap: 16px; }
-.brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; min-height: 44px; }
+.brand { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 2px; min-height: 44px; justify-content: center; }
+.brand-home { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; }
 .brand-glyph {
   display: inline-grid; place-items: center; flex: none;
   border: 1.5px solid var(--ink); color: var(--ink); border-radius: 5px;
@@ -96,7 +97,8 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 600; color: var(--ink); mar
 .brand-row { display: flex; align-items: baseline; gap: 8px; }
 .brand-main { font-family: var(--serif); font-size: 22px; font-weight: 700; line-height: 1.1; letter-spacing: .02em; }
 .brand-latin { font-family: var(--latin); font-size: 8.5px; font-weight: 600; letter-spacing: .14em; color: var(--ink2); }
-.brand-parent { font-size: 10px; letter-spacing: .06em; color: var(--ink2); }
+.brand-parent { font-size: 10px; letter-spacing: .06em; color: var(--ink2); text-decoration: none; }
+a.brand-parent:hover { color: var(--ink); }
 .nav { display: flex; align-items: center; gap: 34px; margin-left: auto; }
 .nav a, .lang-switch { color: var(--ink2); text-decoration: none; font-size: 12.5px; letter-spacing: .02em; white-space: nowrap; }
 .nav a:hover, .lang-switch:hover { color: var(--ink); }
@@ -193,6 +195,20 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 600; color: var(--ink); mar
 .placeholder-note { font-size: 11.5px; }
 .devices-note { margin-top: 24px; font-size: 12.5px; color: var(--ink2); }
 
+.duo { padding: 96px 24px; max-width: var(--content); margin: 0 auto; text-align: center; }
+.duo-body { margin: 20px auto 0; max-width: 680px; color: var(--ink2); font-size: 17px; line-height: 1.6; }
+.duo-grid { margin-top: 48px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; align-items: stretch; }
+.duo-card { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-card); padding: 32px 20px 22px; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.duo-cap { display: flex; flex-direction: column; gap: 4px; color: var(--ink2); font-size: 13px; line-height: 1.45; }
+.duo-cap b { color: var(--ink); font-weight: 600; }
+.duo-note { margin-top: 26px; font-size: 12.5px; color: var(--ink2); border: 1px dashed var(--line); border-radius: 980px; display: inline-flex; padding: 5px 14px; }
+.device--duo-outer .device-frame { width: 240px; aspect-ratio: 932 / 1356; border-radius: 36px; padding: 8px; }
+.device--duo-outer .device-frame img { border-radius: 28px; }
+.device--duo-tabletop .device-frame { width: 260px; aspect-ratio: 1338 / 1902; border-radius: 30px; padding: 8px; }
+.device--duo-tabletop .device-frame img { border-radius: 22px; }
+.device--duo-open .device-frame, .device--duo-tent .device-frame { width: 100%; max-width: 520px; aspect-ratio: 1902 / 1338; border-radius: 30px; padding: 8px; }
+.device--duo-open .device-frame img, .device--duo-tent .device-frame img { border-radius: 22px; }
+@media (max-width: 899px) { .duo-grid { grid-template-columns: 1fr; } }
 .download { padding: 120px 24px 128px; text-align: center; max-width: 760px; margin: 0 auto; }
 .download-body { margin: 22px auto 0; font-size: 18px; line-height: 1.6; color: var(--ink2); }
 .download-points { list-style: none; margin: 26px 0 0; padding: 0; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }

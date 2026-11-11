@@ -105,6 +105,28 @@ export function AppHome({ l }: { l: Locale }) {
           <p className="devices-note">{c.devices.placeholderNote}</p>
         </section>
 
+        <section id="duo" className="duo" aria-labelledby="duo-title">
+          <h2 id="duo-title" className="section-title">{c.duo.title}</h2>
+          <p className="duo-body">{c.duo.body}</p>
+          <div className="duo-grid">
+            {(["duo-outer", "duo-open", "duo-tabletop", "duo-tent"] as const).map((key, i) => {
+              const shots = pair(key);
+              const pose = c.duo.poses[i];
+              return (
+                <figure key={key} className={`duo-card${key === "duo-open" || key === "duo-tent" ? " duo-card--wide" : ""}`}>
+                  {shots ? (
+                    <Device shots={shots} alt={`${c.duo.title} ${pose.label}`} className={`device--${key}`} chip={pose.label} />
+                  ) : (
+                    <DevicePlaceholder l={l} label={pose.label} />
+                  )}
+                  <figcaption className="duo-cap"><b>{pose.label}</b><span>{pose.caption}</span></figcaption>
+                </figure>
+              );
+            })}
+          </div>
+          <p className="duo-note">{c.duo.note}</p>
+        </section>
+
         <section id="download" className="download" aria-labelledby="download-title">
           <h2 id="download-title" className="section-title">{c.download.title}</h2>
           <p className="download-body">{c.download.body}</p>

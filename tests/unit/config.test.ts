@@ -17,7 +17,7 @@ describe("config 单点", () => {
   test("prelaunch 口径与开关", () => {
     expect(SITE.releaseState).toBe("prelaunch");
     expect(SITE.appStoreAppId).toBeNull();
-    expect(SITE.showDuo).toBe(false);
+    expect(SITE.showDuo).toBe(true); // v3.2：官网 Duo 介绍/兼容说明区块启用
     expect(SITE.jsonLd.softwareApplication).toBe(false);
     expect(SITE.jsonLd.organization).toBe(true);
     expect(SITE.jsonLd.website).toBe(true);
@@ -25,15 +25,15 @@ describe("config 单点", () => {
   test("素材登记表 = D1 白名单（手机 5 + ipad + 1440 reference + 节日 hidden）", () => {
     const keys = PUBLIC_SHOTS.map((s) => s.key);
     const visible = PUBLIC_SHOTS.filter((s) => s.type === "design-mock").map((s) => s.key);
-    expect(visible).toEqual(["phone-month", "phone-day", "phone-day-b", "phone-anniversary", "phone-settings", "ipad"]);
+    expect(visible).toEqual(["phone-month", "phone-day", "phone-day-b", "phone-anniversary", "phone-settings", "ipad", "duo-outer", "duo-open", "duo-tabletop", "duo-tent"]);
     for (const k of ["phone-festivals", "phone-locked", "phone-unlocked"]) {
       expect(PUBLIC_SHOTS.find((s) => s.key === k)?.type, k).toBe("hidden");
       expect(isShotRendered(k), k).toBe(false);
     }
     expect(PUBLIC_SHOTS.find((s) => s.key === "web-home-1440")?.type).toBe("reference");
     for (const k of visible) expect(PUBLIC_SHOTS.find((s) => s.key === k)?.available.light, k).toBe(true);
-    // Duo 不登记（A13 前不进官网）
-    expect(keys.some((k) => /duo/i.test(k))).toBe(false);
+    // v3.2：Duo 四姿态已登记（受 showDuo gate + A13 文案约束）
+    for (const k of ["duo-outer", "duo-open", "duo-tabletop", "duo-tent"]) expect(keys, k).toContain(k);
     expect(EXCLUDED_ASSETS.duo).toMatch(/A13/);
   });
   test("禁止 .com 邮箱出现在源码/页面渲染结果", () => {
