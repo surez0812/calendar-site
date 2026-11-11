@@ -115,7 +115,7 @@ export function AppHome({ l }: { l: Locale }) {
               return (
                 <figure key={key} className={`duo-card${key === "duo-open" || key === "duo-tent" ? " duo-card--wide" : ""}`}>
                   {shots ? (
-                    <Device shots={shots} alt={`${c.duo.title} ${pose.label}`} className={`device--${key}`} chip={pose.label} />
+                    <Device shots={shots} alt={`${c.duo.title} ${pose.label}`} className={`device--${key}`} chip={`Duo · ${pose.label}`} />
                   ) : (
                     <DevicePlaceholder l={l} label={pose.label} />
                   )}

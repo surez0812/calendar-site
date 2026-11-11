@@ -33,7 +33,7 @@ export function SiteFooter({ l }: { l: Locale }) {
           </nav>
           <nav aria-label={c.footer.cols.parent}>
             <p className="foot-h">{c.footer.cols.parent}</p>
-            <a href={SITE.mainSiteUrl}>{c.footer.mainSite}</a>
+            <a href={SITE.mainSiteUrl} target="_blank" rel="noopener noreferrer">{c.footer.mainSite} ↗</a>
           </nav>
         </div>
         <div className="foot-bottom">

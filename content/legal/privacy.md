@@ -2,7 +2,7 @@
 
 - 作者：calendar-pm｜日期：2026-11-11｜状态：**草案，待 Sure/法务确认**
 - **单一源规则**：本文件是唯一正文来源。官网 `/privacy` 与 App 内「关于 → 隐私政策」**必须由本文件构建**（Markdown → HTML），禁止两处各写一份（古琴 AC-1…AC-5 的教训 = 两处漂移）。
-- 版本：`prelaunch-0.2`。App Store 提审前必须复核为与**该 build 实际行为**一致，并升级版本号。
+- 版本：`prelaunch-0.3`。App Store 提审前必须复核为与**该 build 实际行为**一致，并升级版本号。
 - 本版覆盖：**App 本体**（v1.0 行为假设）+ **本官网**。若 App 行为变化（如接入统计），必须同步改本文件。
 
 ---
@@ -11,7 +11,7 @@
 
 # 隐私政策
 
-**生效日期：2026 年 11 月 11 日｜版本：prelaunch-0.2**
+**生效日期：2026 年 11 月 11 日｜版本：prelaunch-0.3**
 
 「万年历」（以下称「本应用」，暂定名）由昭杳（以下称「我们」）提供。本政策说明本应用与官方网站如何处理你的信息。我们遵循最小必要原则：**不收集你的个人身份信息。**
 
@@ -68,7 +68,7 @@
 
 # Privacy Policy
 
-**Effective date: November 11, 2026｜Version: prelaunch-0.2**
+**Effective date: November 11, 2026｜Version: prelaunch-0.3**
 
 "ZhaoYao Almanac" (the "App", working title), provided by ZhaoYao ("we", "us"), is a Chinese calendar app. This policy explains how the App and this website handle your information. We follow the principle of data minimisation: **we do not collect your personal identity information.**
 
@@ -77,11 +77,11 @@
 - **No accounts.** No sign-up, no login, no name, phone number, email address or ID documents.
 - **No advertising SDKs.** No ad delivery or ad targeting, **no IDFA**, no tracking across apps or websites (no ATT tracking permission).
 - **No third-party analytics SDKs** (this version has no usage analytics).
-- **No** access to contacts, photos, microphone, camera or precise location. The App requests **local notification** permission only for anniversary reminders, and only when you enable it.
+- **No** access to contacts, photos, microphone, camera or precise location. The App requests **local notification** permission only for countdown reminders, and only when you enable it.
 
 ### 2. Where your data lives
 
-- Anniversaries, birthdays and all settings are stored **only on your device**. Nothing is uploaded or synced (no cloud sync in this version).
+- Countdowns, birthdays and all settings are stored **only on your device**. Nothing is uploaded or synced (no cloud sync in this version).
 - You can **export** your records as JSON at any time, and delete them. Uninstalling the App deletes local data permanently; we cannot recover it for you.
 - Notifications are scheduled locally by iOS and do not pass through our servers.
 
@@ -132,3 +132,4 @@ When this policy changes, we will update this page and the in-App copy together,
    - [ ] 主站既有隐私政策里关于「网站访问日志」的口径是否与本文件一致（`work/zhaoyao-main frontend/src/pages/PrivacyPolicyPage.tsx`）
    - [x] **支持邮箱地址已定稿（2026-11-11 Lead 裁定）**：最终 **`support@zhaoyao.xin`**。依据：`zhaoyao.xin` 有 MX（mx1/mx2/mx3.qiye.aliyun.com）且全站在用；`zhaoyao.com` 为第三方 2004 年注册、无 A/MX（非我们域名）。Sure 确认 `.com` 系笔误；**发布门已解除**，无需再核。
 - [ ] 运营主体名称/备案号（如需展示，由法务提供）
+- `prelaunch-0.3`（2026-11-11）：英文术语 anniversaries→countdowns（功能名“倒计日”统一）；数据行为不变。

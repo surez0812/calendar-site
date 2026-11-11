@@ -1,6 +1,6 @@
 # 支持页 · 万年历 App（prelaunch 最小版 / 单一源）
 
-- 作者：calendar-pm｜日期：2026-11-11｜状态：**草案，待 Sure 确认**｜版本：**prelaunch-0.5**
+- 作者：calendar-pm｜日期：2026-11-11｜状态：**草案，待 Sure 确认**｜版本：**prelaunch-0.6**
 - **单一源规则**：本文件是官网 `/{locale}/support` 的唯一正文来源；App 内「关于 → 帮助与反馈」复用同一来源（App 内可用 WebView 或精简其中 FAQ）。
 - **不编造**：未定的联系方式/上线时间/功能承诺一律留 TODO，不写占位假值。
 
@@ -10,7 +10,7 @@
 
 # 支持与反馈
 
-**版本：prelaunch-0.5（2026-11-11）**
+**版本：prelaunch-0.6（2026-11-11）**
 
 「万年历」（暂定名）正在准备上架。**本应用尚未在 App Store 发布**；正式上架后，本页会更新下载方式与常见问题。
 
@@ -53,7 +53,7 @@ A：不会上传。数据仅保存在你的设备本地。
 
 # Support & Feedback
 
-**Version: prelaunch-0.5 (2026-11-11)**
+**Version: prelaunch-0.6 (2026-11-11)**
 
 "ZhaoYao Almanac" (working title) is being prepared for release. **It is not yet available on the App Store.** This page will be updated with download details and FAQs once it launches.
 
@@ -67,7 +67,7 @@ When reporting an issue, please include: what happened, the date/festival involv
 ## Data & privacy
 
 - No sign-up or login; no personal identity data collected; no ad or analytics SDKs.
-- Your anniversaries are stored **only on your device**; you can export them as JSON.
+- Your countdowns are stored **only on your device**; you can export them as JSON.
 - See the [Privacy Policy](/privacy).
 
 ## FAQ
@@ -87,7 +87,7 @@ iPhone and iPad (iOS 17 or later) are planned. **Check the App Store listing for
 **Is it free? Any ads or in-app purchases?**
 The plan is free, with no ads and no in-app purchases; core features are not paywalled.
 
-**Do you collect my birthdays or anniversaries?**
+**Do you collect my birthdays or countdowns?**
 No. They remain on your device.
 
 ---
@@ -107,4 +107,5 @@ No. They remain on your device.
 
 - `prelaunch-0.2`（2026-11-11）：按 Sure 范围收缩（不做「休班/调休」与「工具入口」）→ FAQ 删除「法定节假日」表述；**站点需重新 vendor 并更新 `LEGAL_SOURCE.sha256`**。
 - `prelaunch-0.3`（2026-11-11）：**英文 FAQ 同步删除 “public holidays”**（中英一致：「Verifiable items — lunar dates and solar-term times」）；内容不变、无需重审。**站点 vendor / `LEGAL_SOURCE.sha256` 以 prelaunch-0.3 SHA 为准**。
-- `prelaunch-0.5`（2026-11-11）：仅修正支持页正文版本行（zh/en）为 **prelaunch-0.5**，内容不变；**站点需 re-vendor 并更新 `LEGAL_SOURCE.sha256`**。
+- `prelaunch-0.6`（2026-11-11）：仅修正支持页正文版本行（zh/en）为 **prelaunch-0.6**，内容不变；**站点需 re-vendor 并更新 `LEGAL_SOURCE.sha256`**。
+- `prelaunch-0.6`（2026-11-11）：英文术语 anniversaries→countdowns（功能名“倒计日”统一）；内容不变。

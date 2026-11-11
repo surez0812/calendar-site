@@ -8,8 +8,8 @@ import crypto from "node:crypto";
 const SRC = path.resolve(process.env.LEGAL_SRC ?? path.join(process.cwd(), "../../handover/calendar-20261111/legal"));
 const DST = path.join(process.cwd(), "content", "legal");
 const MAP = [
-  { from: "privacy-prelaunch.md", to: "privacy.md", expected: "c0c4b5892ad6cee226897cee843a51e3bf021126a532396061011e49eeee5adf" },
-  { from: "support-prelaunch.md", to: "support.md", expected: "ee6ce2095288379e41c183ec21459950bf0a47e031308e1b66572c50a6ac5859" },
+  { from: "privacy-prelaunch.md", to: "privacy.md", expected: "c50a1d31f7007234242beca71c34451b58bf2dff85344eea1498cdc7d4eaa815" },
+  { from: "support-prelaunch.md", to: "support.md", expected: "365b9fc7644efe478d25115a115a72e67f48d22476375a8dedd00ae277ae191e" },
 ];
 
 const sha = (buf) => crypto.createHash("sha256").update(buf).digest("hex");
