@@ -36,6 +36,11 @@ describe("config 单点", () => {
     for (const k of ["duo-outer", "duo-open", "duo-tabletop", "duo-tent"]) expect(keys, k).toContain(k);
     expect(EXCLUDED_ASSETS.duo).toMatch(/A13/);
   });
+  test("legal 版本：privacy 0.3 / support 0.6 / terms 1.0", () => {
+    expect(SITE.legalVersion.privacy).toBe("prelaunch-0.3");
+    expect(SITE.legalVersion.support).toBe("prelaunch-0.6");
+    expect(SITE.legalVersion.terms).toBe("1.0");
+  });
   test("禁止 .com 邮箱出现在源码/页面渲染结果", () => {
     const roots = ["src"].map((d) => path.join(process.cwd(), d));
     const walk = (dir: string): string[] =>

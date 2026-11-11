@@ -3,7 +3,7 @@ import path from "node:path";
 import type { Locale } from "@/config/site";
 import { mdToHtml } from "./markdown";
 
-export type LegalKind = "privacy" | "support";
+export type LegalKind = "privacy" | "support" | "terms";
 
 const DIR = path.join(process.cwd(), "content", "legal");
 
@@ -13,6 +13,13 @@ const DIR = path.join(process.cwd(), "content", "legal");
  */
 export function legalHtml(kind: LegalKind, l: Locale): string {
   const raw = fs.readFileSync(path.join(DIR, `${kind}.md`), "utf8");
+  if (kind === "terms") {
+    // 用户条款为一个文件内 zh（前半）/ en（`---` 分隔后半）；去掉文件内 H1 与版本 meta 行，正文从「## 1.」起
+    const parts = raw.split(/\n---\n/);
+    const part = (l === "zh" ? parts[0] : parts[1]) ?? "";
+    const body = part.split("\n").slice(part.split("\n").findIndex((line) => line.startsWith("## "))).join("\n");
+    return mdToHtml(body);
+  }
   const zhMark = "## 中文（zh-Hans）";
   const enMark = "## English (en)";
   const notesMark = "## 给 webdev 的构建说明";

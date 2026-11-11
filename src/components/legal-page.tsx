@@ -9,8 +9,8 @@ import { legalHtml, type LegalKind } from "@/lib/legal";
 /** 法务/支持页：正文来自单一源 Markdown（content/legal/*.md），站点与 App 内 WebView 同源。 */
 export function LegalPage({ l, kind }: { l: Locale; kind: LegalKind }) {
   const c = copy(l);
-  const title = kind === "privacy" ? c.meta.privacy.title : c.meta.support.title;
-  const version = kind === "privacy" ? SITE.legalVersion.privacy : SITE.legalVersion.support;
+  const title = kind === "privacy" ? c.meta.privacy.title : kind === "support" ? c.meta.support.title : c.meta.terms.title;
+  const version = kind === "privacy" ? SITE.legalVersion.privacy : kind === "support" ? SITE.legalVersion.support : SITE.legalVersion.terms;
   return (
     <div className="app-home">
       <PreviewBanner l={l} />

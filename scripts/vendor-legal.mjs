@@ -10,6 +10,7 @@ const DST = path.join(process.cwd(), "content", "legal");
 const MAP = [
   { from: "privacy-prelaunch.md", to: "privacy.md", expected: "c50a1d31f7007234242beca71c34451b58bf2dff85344eea1498cdc7d4eaa815" },
   { from: "support-prelaunch.md", to: "support.md", expected: "365b9fc7644efe478d25115a115a72e67f48d22476375a8dedd00ae277ae191e" },
+  { from: "user-terms-1.0.md", to: "terms.md", expected: "4fd2e28367c4b86d6fbdc816560fed26c583a0678549c07ec7a85d158ba13365", fixedVersion: "1.0" },
 ];
 
 const sha = (buf) => crypto.createHash("sha256").update(buf).digest("hex");
@@ -22,13 +23,13 @@ if (!process.env.LEGAL_VERSION) {
     version = /版本：`([^`]+)`/.exec(readme)?.[1] ?? "unknown";
   } catch { /* README 缺失时仍 vendor，但版本标 unknown */ }
 }
-const lines = [`# 源：handover/calendar-20261111/legal/（PM 单一源；版本 ${version}；以 legal/README.md 为唯一参照）`];
+const lines = [`# 源：handover/calendar-20261111/legal/（PM 单一源；版本 ${version} + terms 1.0；以 legal/README.md 为唯一参照）`];
 for (const m of MAP) {
   const srcPath = path.join(SRC, m.from);
   const buf = fs.readFileSync(srcPath);
   const h = sha(buf);
   fs.writeFileSync(path.join(DST, m.to), buf);
-  lines.push(`${h}  ${m.from}  ->  content/legal/${m.to}`);
+  lines.push(`${h}  ${m.from}  ->  content/legal/${m.to}${m.fixedVersion ? `  (v${m.fixedVersion})` : ""}`);
   if (m.expected && h !== m.expected) {
     console.warn(`WARN: ${m.from} SHA 与 PM 提供值不一致\n  expected ${m.expected}\n  actual   ${h}`);
   }

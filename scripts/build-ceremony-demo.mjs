@@ -28,7 +28,7 @@ const SLUGS = ["xiezao", "qingming", "chuxi"];
 const esc = (s = "") => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const mdInline = (s = "") => esc(s).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
 
-function page({ slug, c, unlockDate, regionalDates }) {
+function page({ c, unlockDate, regionalDates }) {
   const t = c.title.zh;
   const dateText = regionalDates
     ? regionalDates.map((r) => `${r.region} ${r.date}（${r.note}）`).join(" · ")
@@ -129,7 +129,7 @@ function main() {
     const meta = UNLOCK[slug];
     const dir = path.join(OUT, "ceremony", slug);
     fs.mkdirSync(dir, { recursive: true });
-    const html = page({ slug, c, ...meta });
+    const html = page({ c, ...meta });
     fs.writeFileSync(path.join(dir, "index.html"), html);
     const sha = crypto.createHash("sha256").update(raw).digest("hex");
     manifest.entries.push({

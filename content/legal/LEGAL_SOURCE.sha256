@@ -1,3 +1,4 @@
-# 源：handover/calendar-20261111/legal/（PM 单一源；版本 prelaunch-0.6 (support) / prelaunch-0.3 (privacy)；以 legal/README.md 为唯一参照）
+# 源：handover/calendar-20261111/legal/（PM 单一源；版本 prelaunch-0.6 + terms 1.0；以 legal/README.md 为唯一参照）
 c50a1d31f7007234242beca71c34451b58bf2dff85344eea1498cdc7d4eaa815  privacy-prelaunch.md  ->  content/legal/privacy.md
 365b9fc7644efe478d25115a115a72e67f48d22476375a8dedd00ae277ae191e  support-prelaunch.md  ->  content/legal/support.md
+4fd2e28367c4b86d6fbdc816560fed26c583a0678549c07ec7a85d158ba13365  user-terms-1.0.md  ->  content/legal/terms.md  (v1.0)

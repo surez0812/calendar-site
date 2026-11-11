@@ -5,9 +5,9 @@ const nextConfig: NextConfig = {
   output: "export",
   /**
    * 固定 buildId：让同 commit + 同依赖的 out/ 与 tar 字节可复现（默认 buildId 随机 → 每次重建 tar sha 不同）。
-   * 视觉/内容变更时改版本号（v2.2 → v3 → v3.1 → v3.2 → v3.3）即可。
+   * 视觉/内容变更时改版本号（v2.2 → v3 → v3.1 → v3.2 → v3.3 → v3.4）即可。
    */
-  generateBuildId: async () => "lixiang-static-v3.3",
+  generateBuildId: async () => "lixiang-static-v3.4",
   trailingSlash: true,
   images: { unoptimized: true },
   poweredByHeader: false,

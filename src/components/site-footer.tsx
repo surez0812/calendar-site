@@ -29,6 +29,7 @@ export function SiteFooter({ l }: { l: Locale }) {
             <p className="foot-h">{c.footer.cols.support}</p>
             <Link href={`/${l}/support/`} prefetch={false}>{c.footer.supportLink}</Link>
             <Link href={`/${l}/privacy/`} prefetch={false}>{c.footer.privacy}</Link>
+            <Link href={`/${l}/terms/`} prefetch={false}>{c.footer.termsLink}</Link>
             <a href={`mailto:${SITE.supportEmail}`}>{SITE.supportEmail}</a>
           </nav>
           <nav aria-label={c.footer.cols.parent}>

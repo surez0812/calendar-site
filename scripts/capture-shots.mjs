@@ -58,7 +58,7 @@ try {
     }
   }
   // 法务页抽样
-  for (const p of ["zh/privacy", "en/support"]) {
+  for (const p of ["zh/privacy", "en/support", "zh/terms", "en/terms"]) {
     const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 });
     const page = await ctx.newPage();
     await page.goto(`${BASE}/${p}/`, { waitUntil: "networkidle" });
