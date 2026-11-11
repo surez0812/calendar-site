@@ -36,12 +36,12 @@ export function copy(l: Locale) {
         ? [
             { title: "每日宜忌，全但要能读", body: "日详情给全表：宜忌、冲煞、吉神方位、彭祖百忌等；首屏只留关键，长表可折叠。" },
             { title: "长表折叠，一眼先看关键", body: "信息按需展开：先看结论，需要时再翻完整表格；不把十几行黄历塞进首屏。" },
-            { title: "生日与纪念日，只存本机", body: "纪念日与生日提醒保存在设备本地，不上传、不需要账号；可由你主动导出备份。" },
+            { title: "生日与倒计日，只存本机", body: "倒计日与生日提醒保存在设备本地，不上传、不需要账号；可由你主动导出备份。" },
           ]
         : [
             { title: "The daily almanac, complete but readable", body: "The day view keeps the full table (advice, clashes, auspicious directions, Pengzu taboos); the first screen shows only what matters, long tables fold." },
             { title: "Fold the long tables, keep the essentials", body: "Density on demand: see the conclusion first and unfold the full table when you need it — no ten-row almanac on the first screen." },
-            { title: "Birthdays and anniversaries stay on device", body: "Reminders for anniversaries and birthdays are stored locally, never uploaded, no account needed; you can export a backup yourself." },
+            { title: "Birthdays and countdowns stay on device", body: "Countdowns for birthdays and festivals are stored locally, never uploaded, no account needed; you can export a backup yourself." },
           ],
     },
     unlock: {

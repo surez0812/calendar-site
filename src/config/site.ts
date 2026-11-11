@@ -65,7 +65,7 @@ export const PUBLIC_SHOTS: readonly ShotAsset[] = [
   { key: "phone-month", file: "phone-month", kind: "phone", type: "design-mock", available: { light: true, dark: true }, widths: [375, 750], w: 375, h: 812, note: "月历主屏（D1）" },
   { key: "phone-day", file: "phone-day", kind: "phone", type: "design-mock", available: { light: true, dark: true }, widths: [375, 750], w: 375, h: 812, note: "日详情（D1）" },
   { key: "phone-day-b", file: "phone-compass", kind: "phone", type: "design-mock", available: { light: true, dark: true }, widths: [375, 750], w: 375, h: 812, note: "日详情第 2 屏 → D1 吉神罗盘" },
-  { key: "phone-anniversary", file: "phone-anniversary", kind: "phone", type: "design-mock", available: { light: true, dark: true }, widths: [375, 750], w: 375, h: 812, note: "纪念日（D1）" },
+  { key: "phone-anniversary", file: "phone-anniversary", kind: "phone", type: "design-mock", available: { light: true, dark: true }, widths: [375, 750], w: 375, h: 812, note: "倒计日（D1）" },
   { key: "phone-settings", file: "phone-settings", kind: "phone", type: "design-mock", available: { light: true, dark: true }, widths: [375, 750], w: 375, h: 812, note: "设置（D1）" },
   { key: "ipad", file: "ipad", kind: "ipad", type: "design-mock", available: { light: true, dark: true }, widths: [683, 1366], w: 683, h: 512, note: "iPad 双栏（D1；本轮不接线，保留）" },
   { key: "web-home-1440", file: "web-home-1440", kind: "desktop", type: "reference", available: { light: true, dark: true }, widths: [1440], w: 1440, h: 4950, note: "官网 1440 设计参考（不上公开页）" },
