@@ -24,7 +24,7 @@ export const SITE = {
   showDuo: true, // PROPOSAL prototype（A13 前仅写「为 iPhone Duo 设计」，不写「已支持折叠屏」）
   /** 结构化数据：prelaunch 只发 Organization + WebSite；live 后才加 SoftwareApplication（D11） */
   jsonLd: { organization: true, website: true, softwareApplication: false },
-  legalVersion: { privacy: "prelaunch-0.3", support: "prelaunch-0.6", terms: "1.0" }, // privacy v0.3 / support v0.6 / user terms 1.0
+  legalVersion: { privacy: "1.0", support: "1.0", terms: "1.0" }, // legal 统一 1.0（2026-11-12）：privacy/support/terms
 } as const;
 
 export const isLive = (): boolean => SITE.releaseState === "live" && !!SITE.appStoreAppId;

@@ -1,4 +1,4 @@
-# 源：handover/calendar-20261111/legal/（PM 单一源；版本 prelaunch-0.6 + terms 1.0；以 legal/README.md 为唯一参照）
-c50a1d31f7007234242beca71c34451b58bf2dff85344eea1498cdc7d4eaa815  privacy-prelaunch.md  ->  content/legal/privacy.md
-365b9fc7644efe478d25115a115a72e67f48d22476375a8dedd00ae277ae191e  support-prelaunch.md  ->  content/legal/support.md
+# 源：handover/calendar-20261111/legal/（PM 单一源；版本 1.0 + terms 1.0；以 legal/README.md 为唯一参照）
+5fd4e78c6cefda5cc10efb89062535628201774f2ea887eba456d7354b8a0a4b  work/lixiang-ios/App/Resources/Legal/privacy.md  ->  content/legal/privacy.md
+2557ed55157679359f294c7f051c04801de8311cb3bf03080eb7269b84f2d529  work/lixiang-ios/App/Resources/Legal/support.md  ->  content/legal/support.md
 4fd2e28367c4b86d6fbdc816560fed26c583a0678549c07ec7a85d158ba13365  user-terms-1.0.md  ->  content/legal/terms.md  (v1.0)

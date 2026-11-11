@@ -14,21 +14,26 @@ const DIR = path.join(process.cwd(), "content", "legal");
 export function legalHtml(kind: LegalKind, l: Locale): string {
   const raw = fs.readFileSync(path.join(DIR, `${kind}.md`), "utf8");
   if (kind === "terms") {
-    // 用户条款为一个文件内 zh（前半）/ en（`---` 分隔后半）；去掉文件内 H1 与版本 meta 行，正文从「## 1.」起
+    // 用户条款：文件内 zh（前）/ en（`---` 分隔后半）；去 H1/版本 meta，正文从「## 1.」起
     const parts = raw.split(/\n---\n/);
     const part = (l === "zh" ? parts[0] : parts[1]) ?? "";
-    const body = part.split("\n").slice(part.split("\n").findIndex((line) => line.startsWith("## "))).join("\n");
-    return mdToHtml(body);
+    const lines = part.split("\n");
+    const startAt = lines.findIndex((line) => line.startsWith("## "));
+    return mdToHtml(lines.slice(startAt).join("\n"));
   }
-  const zhMark = "## 中文（zh-Hans）";
-  const enMark = "## English (en)";
-  const notesMark = "## 给 webdev 的构建说明";
-  const zhAt = raw.indexOf(zhMark);
-  const enAt = raw.indexOf(enMark);
-  const notesAt = raw.indexOf(notesMark);
-  const body =
-    l === "zh"
-      ? raw.slice(zhAt + zhMark.length, enAt > 0 ? enAt : undefined)
-      : raw.slice(enAt + enMark.length, notesAt > 0 ? notesAt : undefined);
-  return mdToHtml(body);
+  // privacy / support（legal 1.0）：单文件内两个 H1（zh 在前，en 在后）；去掉正文内 H1 与标题行
+  const enHeading = kind === "privacy" ? "\n# Privacy Policy" : "\n# Support & Feedback";
+  const at = raw.indexOf(enHeading);
+  const zhPart = at >= 0 ? raw.slice(0, at) : raw;
+  const enPart = at >= 0 ? raw.slice(at) : "";
+  const part = l === "zh" ? zhPart : enPart;
+  const lines = part.split("\n");
+  const startAt = lines.findIndex((line) => line.startsWith("## "));
+  const kept = startAt > 0 ? lines.slice(startAt) : lines.slice(1);
+  // 保留正文前的「生效日期/版本」行（H1 与空行之后、首个 ## 之前）
+  if (startAt > 1) {
+    const pre = lines.slice(1, startAt).filter((line) => line.trim().length > 0 && !line.startsWith("# "));
+    return mdToHtml([...pre, ...lines.slice(startAt)].join("\n"));
+  }
+  return mdToHtml(kept.join("\n"));
 }
